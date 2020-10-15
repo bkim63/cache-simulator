@@ -1,3 +1,11 @@
+/**
+ * CSF Fall 2020
+ * Cache implementation
+ * Assignment 3
+ * 1. Steven (Bumjin) Kim
+ * 2. Rebecca Shao
+ */
+
 #include "cacheblock.h"
 #include "cacheconfig.h"
 #include <vector>
