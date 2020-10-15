@@ -1,10 +1,11 @@
 /**
  * CSF Fall 2020
- * Squaring two vector values and storing to result vector.
+ * Cache implementation
  * Assignment 3
- * Steven (Bumjin) Kim
- * bkim63@jhu.edu
+ * 1. Steven (Bumjin) Kim
+ * 2. Rebecca Shao
  */
+
 #include <sstream>
 #include "cachesimulator.h"
 #include <string>
