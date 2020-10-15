@@ -2,9 +2,10 @@
  * CSF Fall 2020
  * Cache implementation
  * Assignment 3
- * Steven (Bumjin) Kim
- * bkim63@jhu.edu
+ * 1. Steven (Bumjin) Kim
+ * 2. Rebecca Shao
  */
+
 #include "counter.h"
 
 namespace bkim63 {
