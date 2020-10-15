@@ -1,8 +1,8 @@
 # CSF Fall 2020
 # Cache simulator
 # Assignment 3
-# Steven (Bumjin) Kim
-# bkim63@jhu.edu
+# 1. Steven (Bumjin) Kim
+# 2. Rebecca Shao
 
 CXX = g++
 CXXFLAGS = -Wall -Wextra --pedantic
