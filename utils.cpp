@@ -31,7 +31,6 @@ namespace CacheSimulator {
         // std::cout << "load miss: " << address << std::endl;
 
         uint32_t offset_bit_number = cache_config.getNumBlockOffsetBits();
-        // uint32_t index_bit_number = cache_config.get_num_index_bits();
         uint32_t tag_bit_number = cache_config.getNumTagBits();
 
         // std::cout << "load miss: " << offset_bits << " " << tag_bits << std::endl;
@@ -44,7 +43,6 @@ namespace CacheSimulator {
     }
 
     uint32_t getBlockOffset(uint32_t address, const CacheConfig &cache_config) {
-        // uint32_t offset_bit_number = cache_config.get_num_block_offset_bits();
         uint32_t index_bit_number = cache_config.getNumIndexBits();
         uint32_t tag_bit_number = cache_config.getNumTagBits();
 
