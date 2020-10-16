@@ -18,18 +18,14 @@
 
 #include "counter.h"
 
-using std::make_pair;
-using std::uint32_t;
-using std::vector;
-
 namespace CacheSimulator {
     class Memory {
     public:
         void readLine(const std::string &line);
 
-        vector<uint32_t> readBlock(uint32_t address, uint32_t block_size);
+        std::vector<uint32_t> readBlock(uint32_t address, uint32_t block_size);
 
-        void writeBlock(uint32_t address, vector<uint32_t> data);
+        void writeBlock(uint32_t address, std::vector<uint32_t> data);
 
         void writeWord(uint32_t address, uint32_t data);
 
@@ -40,8 +36,8 @@ namespace CacheSimulator {
     private:
         std::map<uint32_t, uint32_t> _data;
 
-        mutable vector<uint32_t> _reads;
-        mutable vector<std::pair<uint32_t, uint32_t> > _writes;
+        mutable std::vector<uint32_t> _reads;
+        mutable std::vector<std::pair<uint32_t, uint32_t> > _writes;
         mutable Counter _num_writes;
     };
 }

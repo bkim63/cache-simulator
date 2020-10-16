@@ -13,7 +13,6 @@
 #include <cstdint>
 #include "cacheconfig.h"
 
-using std::uint32_t;
 
 namespace CacheSimulator {
     uint32_t extractTag(uint32_t address, const CacheConfig &cache_config);

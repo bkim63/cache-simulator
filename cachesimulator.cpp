@@ -22,7 +22,7 @@ namespace CacheSimulator {
         const CacheConfig &_cache_config = _cache->getCacheConfig();
         uint32_t index = extractIndex(address, _cache_config);
 
-        vector<CacheBlock *> cache_vec = _cache->getBlocksInSet(index);
+        std::vector<CacheBlock *> cache_vec = _cache->getBlocksInSet(index);
         uint32_t tag = extractTag(address, _cache_config);
 
         for (size_t i = 0; i < cache_vec.size(); i++) {
@@ -50,7 +50,7 @@ namespace CacheSimulator {
         const CacheConfig &_cache_config = _cache->getCacheConfig();
         uint32_t index = extractIndex(address, _cache_config);
 
-        vector<CacheBlock *> cache_vec = _cache->getBlocksInSet(index);
+        std::vector<CacheBlock *> cache_vec = _cache->getBlocksInSet(index);
         uint32_t tag = extractTag(address, _cache_config);
 
         uint32_t least_recently_used = 1000000;

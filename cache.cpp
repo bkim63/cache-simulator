@@ -86,7 +86,7 @@ namespace CacheSimulator {
         _cache_config = cacheConfig;
     }
 
-    vector<CacheBlock *> Cache::getBlocksInSet(uint32_t index) const {
+    std::vector<CacheBlock *> Cache::getBlocksInSet(uint32_t index) const {
         uint32_t num_sets = _cache_config.getSize() / _cache_config.getNumBytes() / _cache_config.getAssociativity();
 
         assert(index < num_sets);
@@ -94,7 +94,7 @@ namespace CacheSimulator {
         std::__wrap_iter<CacheBlock *const *> first_block = _blocks.begin() + (index * _cache_config.getAssociativity());
         std::__wrap_iter<CacheBlock *const *> last_block = first_block + _cache_config.getAssociativity();
 
-        vector<CacheBlock *> set(first_block, last_block);
+        std::vector<CacheBlock *> set(first_block, last_block);
         return set;
     }
 

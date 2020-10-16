@@ -19,7 +19,6 @@
 #include "memory.h"
 #include "utils.h"
 
-using std::uint32_t;
 
 namespace CacheSimulator {
     class CacheSimulator {

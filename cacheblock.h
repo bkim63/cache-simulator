@@ -16,9 +16,6 @@
 #include "memory.h"
 #include "cacheconfig.h"
 
-using std::uint32_t;
-using std::vector;
-
 namespace CacheSimulator {
     class CacheBlock {
     public:
@@ -62,7 +59,7 @@ namespace CacheSimulator {
         bool _valid;
         bool _dirty;
 
-        vector<uint32_t> _data;
+        std::vector<uint32_t> _data;
 
         const CacheConfig &_cache_config;
 
