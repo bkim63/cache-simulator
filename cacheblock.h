@@ -1,9 +1,11 @@
 /**
  * CSF Fall 2020
- * Cache implementation
+ * Cache block function declarations
  * Assignment 3
  * 1. Steven (Bumjin) Kim
+ *    bkim63@jhu.edu
  * 2. Rebecca Shao
+ *    rshao5@jhu.edu
  */
 
 #ifndef CACHE_BLOCK_H
@@ -19,9 +21,8 @@
 namespace CacheSimulator {
     class CacheBlock {
     public:
-        CacheBlock(uint32_t index, const CacheConfig &cache_config) : _index(index),
-                                                                      _data(cache_config.getNumBytes()),
-                                                                      _cache_config(cache_config) {}
+        CacheBlock(uint32_t index, const CacheConfig &cache_config) :
+            _index(index), _data(cache_config.getNumBytes()), _cache_config(cache_config) {}
 
         uint32_t getTag() const;
         void setTag(uint32_t tag);

@@ -1,9 +1,11 @@
 /**
  * CSF Fall 2020
- * Cache implementation
+ * Cache utility function declarations
  * Assignment 3
  * 1. Steven (Bumjin) Kim
+ *    bkim63@jhu.edu
  * 2. Rebecca Shao
+ *    rshao5@jhu.edu
  */
 
 #ifndef UTILS_H
@@ -24,7 +26,6 @@ namespace CacheSimulator {
     bool isPowerOf2(uint32_t num);
     
     uint32_t log2(uint32_t num);
-
 }
 
 #endif

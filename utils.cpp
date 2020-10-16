@@ -1,9 +1,11 @@
 /**
  * CSF Fall 2020
- * Cache implementation
+ * Cache utility implementation
  * Assignment 3
  * 1. Steven (Bumjin) Kim
+ *    bkim63@jhu.edu
  * 2. Rebecca Shao
+ *    rshao5@jhu.edu
  */
 
 #include "utils.h"
@@ -11,15 +13,13 @@
 using namespace std;
 
 namespace CacheSimulator {
-
     uint32_t extractTag(uint32_t address, const CacheConfig &cache_config) {
         uint32_t offset_bits = cache_config.getNumBlockOffsetBits();
         uint32_t index_bits = cache_config.getNumIndexBits();
         uint32_t tag_bits = cache_config.getNumTagBits();
 
-        if (tag_bits > 31) {
+        if (tag_bits > 31)
             return address;
-        }
         return (address >> (offset_bits + index_bits));
     }
 
