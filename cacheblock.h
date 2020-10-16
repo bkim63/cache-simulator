@@ -19,7 +19,7 @@
 using std::uint32_t;
 using std::vector;
 
-namespace bkim63 {
+namespace CacheSimulator {
     class CacheBlock {
     public:
         CacheBlock(uint32_t index, const CacheConfig &cache_config) : _index(index),

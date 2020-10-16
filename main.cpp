@@ -19,20 +19,20 @@ int main(int argc, char *argv[]) {
         uint32_t num_blocks = strtoul(argv[2], NULL, 10);
         uint32_t num_bytes = strtoul(argv[3], NULL, 10);
 
-        bkim63::Allocation allocate = strcmp(argv[4], "write-allocate") ?
-                                      bkim63::WRITE_ALLOCATE : bkim63::NO_WRITE_ALLOCATE;
-        bkim63::Write write = strcmp(argv[5], "write-back") ?
-                              bkim63::WRITE_BACK : bkim63::WRITE_THROUGH;
-        bkim63::CacheEviction eviction = strcmp(argv[6], "lru") ?
-                                         bkim63::LRU : bkim63::FIFO;
+        CacheSimulator::Allocation allocate = strcmp(argv[4], "write-allocate") ?
+                                              CacheSimulator::WRITE_ALLOCATE : CacheSimulator::NO_WRITE_ALLOCATE;
+        CacheSimulator::Write write = strcmp(argv[5], "write-back") ?
+                                      CacheSimulator::WRITE_BACK : CacheSimulator::WRITE_THROUGH;
+        CacheSimulator::CacheEviction eviction = strcmp(argv[6], "lru") ?
+                                                 CacheSimulator::LRU : CacheSimulator::FIFO;
 
-        bkim63::CacheConfig cacheConfig = bkim63::CacheConfig(16777216, num_sets, num_blocks, num_bytes, allocate,
-                                                              write,
-                                                              eviction);
-        bkim63::Cache cache(cacheConfig);
-        bkim63::Memory memory;
+        CacheSimulator::CacheConfig cacheConfig = CacheSimulator::CacheConfig(16777216, num_sets, num_blocks, num_bytes, allocate,
+                                                                              write,
+                                                                              eviction);
+        CacheSimulator::Cache cache(cacheConfig);
+        CacheSimulator::Memory memory;
 
-        bkim63::CacheSimulator *cacheSimulator = new bkim63::CacheSimulator(&cache, &memory);
+        CacheSimulator::CacheSimulator *cacheSimulator = new CacheSimulator::CacheSimulator(&cache, &memory);
 
         for (string line; getline(cin, line);) {
             memory.readLine(line);

@@ -12,7 +12,7 @@
 
 using namespace std;
 
-namespace bkim63 {
+namespace CacheSimulator {
 
     uint32_t extractTag(uint32_t address, const CacheConfig &cache_config) {
         uint32_t offset_bits = cache_config.getNumBlockOffsetBits();

@@ -15,7 +15,7 @@
 
 using std::uint32_t;
 
-namespace bkim63 {
+namespace CacheSimulator {
     uint32_t extractTag(uint32_t address, const CacheConfig &cache_config);
 
     uint32_t extractIndex(uint32_t address, const CacheConfig &cache_config);

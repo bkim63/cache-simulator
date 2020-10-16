@@ -8,8 +8,8 @@
 
 #include "counter.h"
 
-namespace bkim63 {
-    Counter &bkim63::Counter::operator++() {
+namespace CacheSimulator {
+    Counter &CacheSimulator::Counter::operator++() {
         _increment();
         return *this;
     }

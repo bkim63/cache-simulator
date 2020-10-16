@@ -10,7 +10,7 @@
 #include "cacheconfig.h"
 #include <vector>
 
-namespace bkim63 {
+namespace CacheSimulator {
     uint32_t CacheBlock::getAddress() const {
         uint32_t offset_bits = _cache_config.getNumBlockOffsetBits();
         uint32_t index_bits = _cache_config.getNumIndexBits();

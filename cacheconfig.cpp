@@ -12,7 +12,7 @@
 
 using namespace std;
 
-namespace bkim63 {
+namespace CacheSimulator {
     unsigned int CacheConfig::getNumSets() const {
         return _num_sets;
     }

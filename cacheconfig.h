@@ -11,7 +11,7 @@
 
 #include <cstdint>
 
-namespace bkim63 {
+namespace CacheSimulator {
     enum Allocation {
         WRITE_ALLOCATE,
         NO_WRITE_ALLOCATE

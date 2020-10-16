@@ -8,7 +8,7 @@
 
 #include "cachesimulator.h"
 
-namespace bkim63 {
+namespace CacheSimulator {
     CacheBlock *CacheSimulator::findBlock(uint32_t address) const {
         /**
          *

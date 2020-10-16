@@ -22,7 +22,7 @@ using std::make_pair;
 using std::uint32_t;
 using std::vector;
 
-namespace bkim63 {
+namespace CacheSimulator {
     class Memory {
     public:
         void readLine(const std::string &line);

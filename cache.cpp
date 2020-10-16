@@ -10,7 +10,7 @@
 #include "cacheconfig.h"
 #include "cacheblock.h"
 
-namespace bkim63 {
+namespace CacheSimulator {
     Cache::Cache(CacheConfig &cacheConfig) : _cache_config(cacheConfig) {
         _total_loads = 0;
         _total_sets = 0;

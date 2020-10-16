@@ -17,7 +17,7 @@
 
 using namespace std;
 
-namespace bkim63 {
+namespace CacheSimulator {
     class CacheBlock;
     class CacheConfig;
 

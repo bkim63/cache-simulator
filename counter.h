@@ -11,7 +11,7 @@
 
 #include <cstdint>
 
-namespace bkim63 {
+namespace CacheSimulator {
     class Counter {
     public:
         Counter &operator++();

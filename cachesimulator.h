@@ -21,7 +21,7 @@
 
 using std::uint32_t;
 
-namespace bkim63 {
+namespace CacheSimulator {
     class CacheSimulator {
     public:
         CacheSimulator(Cache* cache, Memory* memory)

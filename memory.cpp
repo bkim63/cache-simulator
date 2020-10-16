@@ -13,7 +13,7 @@
 
 using namespace std;
 
-namespace bkim63 {
+namespace CacheSimulator {
     vector<uint32_t> Memory::readBlock(uint32_t address, uint32_t block_size) {
         uint32_t block_offset_bits = log2(block_size);
 
