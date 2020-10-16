@@ -15,4 +15,4 @@ add_executable(
         Makefile
         memory.cpp
         memory.h
-        README.txt counter.h utils.h utils.cpp counter.cpp cachesimulator.cpp cachesimulator.h cache.cpp)
+        README counter.h utils.h utils.cpp counter.cpp cachesimulator.cpp cachesimulator.h cache.cpp)
