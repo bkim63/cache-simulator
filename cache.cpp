@@ -91,8 +91,8 @@ namespace CacheSimulator {
 
         assert(index < num_sets);
 
-        auto first_block = _blocks.begin() + (index * _cache_config.getAssociativity());
-        auto last_block = first_block + _cache_config.getAssociativity();
+        std::__wrap_iter<CacheBlock *const *> first_block = _blocks.begin() + (index * _cache_config.getAssociativity());
+        std::__wrap_iter<CacheBlock *const *> last_block = first_block + _cache_config.getAssociativity();
 
         vector<CacheBlock *> set(first_block, last_block);
         return set;
@@ -109,8 +109,8 @@ namespace CacheSimulator {
     }
 
     Cache::~Cache() {
-        for (auto block : _blocks) {
-            delete block;
+        for (size_t i = 0; i < _blocks.size(); i++) {
+            delete _blocks[i];
         }
     }
 
