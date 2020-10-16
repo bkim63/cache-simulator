@@ -10,8 +10,6 @@
 #include "cachesimulator.h"
 #include <string>
 
-using namespace std;
-
 int main(int argc, char *argv[]) {
 
     if (argc == 7) {
@@ -34,15 +32,15 @@ int main(int argc, char *argv[]) {
 
         CacheSimulator::CacheSimulator *cacheSimulator = new CacheSimulator::CacheSimulator(&cache, &memory);
 
-        for (string line; getline(cin, line);) {
+        for (std::string line; getline(std::cin, line);) {
             memory.readLine(line);
 
             uint32_t address, data;
-            string loading;
+            std::string loading;
 
-            istringstream string_stream(line);
+            std::istringstream string_stream(line);
 
-            string_stream >> loading >> hex >> address >> dec >> data;
+            string_stream >> loading >> std::hex >> address >> std::dec >> data;
 
             if (loading == "l") {
                 cacheSimulator->read(address);
@@ -54,8 +52,8 @@ int main(int argc, char *argv[]) {
         cacheSimulator->display();
 
     } else {
-        cout << "No argument passed to program\n";
-        cout << "Usage: " << "./csim <number-of-sets>"
+        std::cout << "No argument passed to program\n";
+        std::cout << "Usage: " << "./csim <number-of-sets>"
              << " <number-of-blocks>"
              << " <number-of-bytes>"
              << " <allocation>"
