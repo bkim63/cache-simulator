@@ -22,10 +22,10 @@ namespace CacheSimulator {
      */
     CacheBlock *CacheSimulator::findBlock(uint32_t address) const {
         const CacheConfig &_cache_config = _cache->getCacheConfig();
-        uint32_t index = extractIndex(address, _cache_config);
+        uint32_t index = getIndex(address, _cache_config);
 
         std::vector<CacheBlock *> cache_vec = _cache->getBlocksInSet(index);
-        uint32_t tag = extractTag(address, _cache_config);
+        uint32_t tag = getTag(address, _cache_config);
 
         for (size_t i = 0; i < cache_vec.size(); i++) {
             if (cache_vec[i]->getTag() == tag && cache_vec[i]->isValid()) {
@@ -49,9 +49,9 @@ namespace CacheSimulator {
      */
     CacheBlock *CacheSimulator::bringBlockIntoCache(uint32_t address) const {
         const CacheConfig &_cache_config = _cache->getCacheConfig();
-        uint32_t index = extractIndex(address, _cache_config);
+        uint32_t index = getIndex(address, _cache_config);
         std::vector<CacheBlock *> cache_vec = _cache->getBlocksInSet(index);
-        uint32_t tag = extractTag(address, _cache_config);
+        uint32_t tag = getTag(address, _cache_config);
         uint32_t least_recently_used = 1000000;
         uint32_t first_stored_time = 1000000;
 
@@ -124,7 +124,7 @@ namespace CacheSimulator {
         const CacheConfig &_cache_config = _cache->getCacheConfig();
         caching->setLastUsedTime((++_use_clock).getCount());
 
-        return caching->readWordAtOffset(extractBlockOffset(address, _cache_config));
+        return caching->readWordAtOffset(getBlockOffset(address, _cache_config));
     }
 
     /**
@@ -163,7 +163,7 @@ namespace CacheSimulator {
         caching->setStoredTime((++this->_use_clock).getCount());
 
         const CacheConfig &_cache_config = this->_cache->getCacheConfig();
-        caching->writeWordAtOffset(word, extractBlockOffset(address, _cache_config));
+        caching->writeWordAtOffset(word, getBlockOffset(address, _cache_config));
 
         if (_cache_config.getWrite() == WRITE_BACK)
             caching->markAsDirty();

@@ -17,11 +17,11 @@
 
 
 namespace CacheSimulator {
-    uint32_t extractTag(uint32_t address, const CacheConfig &cache_config);
+    uint32_t getTag(uint32_t address, const CacheConfig &cache_config);
 
-    uint32_t extractIndex(uint32_t address, const CacheConfig &cache_config);
+    uint32_t getIndex(uint32_t address, const CacheConfig &cache_config);
 
-    uint32_t extractBlockOffset(uint32_t address, const CacheConfig &cache_config);
+    uint32_t getBlockOffset(uint32_t address, const CacheConfig &cache_config);
 
     bool isPowerOf2(uint32_t num);
     
