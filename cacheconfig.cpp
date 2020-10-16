@@ -6,7 +6,6 @@
  * 2. Rebecca Shao
  */
 
-#include <iostream>
 #include "cacheconfig.h"
 #include "utils.h"
 

@@ -170,13 +170,13 @@ namespace CacheSimulator {
     }
 
     void CacheSimulator::display() {
-        cout << "Total loads: " << _cache->getTotalLoads() << "\n";
-        cout << "Total stores: " << _cache->getTotalSets() << "\n";
-        cout << "Load hits: " << _cache->getLoadHits() << "\n";
-        cout << "Load misses: " << _cache->getLoadMisses() << "\n";
-        cout << "Store hits: " << _cache->getSetHits() << "\n";
-        cout << "Store misses: " << _cache->getSetMisses() << "\n";
-        cout << "Total cycles: " << _cache->getTotalCycles() << "\n";
-        cout << endl;
+        std::cout << "Total loads: " << _cache->getTotalLoads() << "\n";
+        std::cout << "Total stores: " << _cache->getTotalSets() << "\n";
+        std::cout << "Load hits: " << _cache->getLoadHits() << "\n";
+        std::cout << "Load misses: " << _cache->getLoadMisses() << "\n";
+        std::cout << "Store hits: " << _cache->getSetHits() << "\n";
+        std::cout << "Store misses: " << _cache->getSetMisses() << "\n";
+        std::cout << "Total cycles: " << _cache->getTotalCycles() << "\n";
+        std::cout << std::endl;
     }
 }

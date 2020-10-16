@@ -15,15 +15,13 @@
 #include <unordered_map>
 #include <vector>
 
-using namespace std;
-
 namespace CacheSimulator {
     class CacheBlock;
     class CacheConfig;
 
     class Cache {
     public:
-        vector<CacheBlock *> getBlocksInSet(uint32_t index) const;
+        std::vector<CacheBlock *> getBlocksInSet(uint32_t index) const;
 
         Cache(CacheConfig &cacheConfig);
 
@@ -74,7 +72,7 @@ namespace CacheSimulator {
         int _total_cycles;
 
         CacheConfig &_cache_config;
-        vector<CacheBlock*> _blocks;
+        std::vector<CacheBlock*> _blocks;
 
         void initBlocks();
     };
