@@ -1,9 +1,11 @@
 /**
  * CSF Fall 2020
- * Cache implementation
+ * Cache counter function declarations
  * Assignment 3
  * 1. Steven (Bumjin) Kim
+ *    bkim63@jhu.edu
  * 2. Rebecca Shao
+ *    rshao5@jhu.edu
  */
 
 #ifndef COUNTER_H
@@ -11,7 +13,7 @@
 
 #include <cstdint>
 
-namespace bkim63 {
+namespace CacheSimulator {
     class Counter {
     public:
         Counter &operator++();

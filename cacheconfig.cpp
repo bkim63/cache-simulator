@@ -1,18 +1,23 @@
 /**
  * CSF Fall 2020
+<<<<<<< HEAD
  * Source file for cache configuration functions
+=======
+ * Cache config implementation
+>>>>>>> e7b8c88eb752cb64fc26e456ef9abe94cc893046
  * Assignment 3
  * 1. Steven (Bumjin) Kim
+ *    bkim63@jhu.edu
  * 2. Rebecca Shao
+ *    rshao5@jhu.edu
  */
 
-#include <iostream>
 #include "cacheconfig.h"
 #include "utils.h"
 
 using namespace std;
 
-namespace bkim63 {
+namespace CacheSimulator {
     unsigned int CacheConfig::getNumSets() const {
         return _num_sets;
     }

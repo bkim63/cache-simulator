@@ -1,9 +1,15 @@
 /**
  * CSF Fall 2020
+<<<<<<< HEAD
  * Header file for CacheBlock class
+=======
+ * Cache block function declarations
+>>>>>>> e7b8c88eb752cb64fc26e456ef9abe94cc893046
  * Assignment 3
  * 1. Steven (Bumjin) Kim
+ *    bkim63@jhu.edu
  * 2. Rebecca Shao
+ *    rshao5@jhu.edu
  */
 
 #ifndef CACHE_BLOCK_H
@@ -16,15 +22,11 @@
 #include "memory.h"
 #include "cacheconfig.h"
 
-using std::uint32_t;
-using std::vector;
-
-namespace bkim63 {
+namespace CacheSimulator {
     class CacheBlock {
     public:
-        CacheBlock(uint32_t index, const CacheConfig &cache_config) : _index(index),
-                                                                      _data(cache_config.getNumBytes()),
-                                                                      _cache_config(cache_config) {}
+        CacheBlock(uint32_t index, const CacheConfig &cache_config) :
+            _index(index), _data(cache_config.getNumBytes()), _cache_config(cache_config) {}
 
         uint32_t getTag() const;
         void setTag(uint32_t tag);
@@ -62,7 +64,7 @@ namespace bkim63 {
         bool _valid;
         bool _dirty;
 
-        vector<uint32_t> _data;
+        std::vector<uint32_t> _data;
 
         const CacheConfig &_cache_config;
 

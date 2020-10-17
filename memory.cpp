@@ -1,9 +1,15 @@
 /**
  * CSF Fall 2020
+<<<<<<< HEAD
  * Source file for Memory Class
+=======
+ * Cache memory implementation
+>>>>>>> e7b8c88eb752cb64fc26e456ef9abe94cc893046
  * Assignment 3
  * 1. Steven (Bumjin) Kim
+ *    bkim63@jhu.edu
  * 2. Rebecca Shao
+ *    rshao5@jhu.edu
  */
 
 #include <sstream>
@@ -13,7 +19,7 @@
 
 using namespace std;
 
-namespace bkim63 {
+namespace CacheSimulator {
     vector<uint32_t> Memory::readBlock(uint32_t address, uint32_t block_size) {
         uint32_t block_offset_bits = log2(block_size);
 

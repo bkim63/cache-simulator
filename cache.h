@@ -1,9 +1,15 @@
 /**
  * CSF Fall 2020
+<<<<<<< HEAD
  * Header file for Cache Class
+=======
+ * Cache function declarations
+>>>>>>> e7b8c88eb752cb64fc26e456ef9abe94cc893046
  * Assignment 3
  * 1. Steven (Bumjin) Kim
+ *    bkim63@jhu.edu
  * 2. Rebecca Shao
+ *    rshao5@jhu.edu
  */
 
 #ifndef CACHE_H
@@ -15,15 +21,13 @@
 #include <unordered_map>
 #include <vector>
 
-using namespace std;
-
-namespace bkim63 {
+namespace CacheSimulator {
     class CacheBlock;
     class CacheConfig;
 
     class Cache {
     public:
-        vector<CacheBlock *> getBlocksInSet(uint32_t index) const;
+        std::vector<CacheBlock *> getBlocksInSet(uint32_t index) const;
 
         Cache(CacheConfig &cacheConfig);
 
@@ -74,7 +78,7 @@ namespace bkim63 {
         int _total_cycles;
 
         CacheConfig &_cache_config;
-        vector<CacheBlock*> _blocks;
+        std::vector<CacheBlock*> _blocks;
 
         void initBlocks();
     };

@@ -26,7 +26,7 @@ utils.o: cacheconfig.h utils.h
 
 solution.zip :
 	rm -f solution.zip
-	zip -9r $@ Makefile Makefile Problem1.s cache.cpp cache.h cacheblock.cpp cacheblock.h cacheconfig.cpp cacheconfig.h cachesimulator.cpp cachesimulator.h counter.h counter.cpp main.cpp memory.cpp memory.h utils.cpp utils.h README.txt
+	zip -9r $@ Makefile Makefile cache.cpp cache.h cacheblock.cpp cacheblock.h cacheconfig.cpp cacheconfig.h cachesimulator.cpp cachesimulator.h counter.h counter.cpp main.cpp memory.cpp memory.h utils.cpp utils.h README
 
 clean :
 	rm -f *.o csim solution.zip

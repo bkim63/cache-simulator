@@ -1,9 +1,11 @@
 /**
  * CSF Fall 2020
- * Cache implementation
+ * Cache memory function declarations
  * Assignment 3
  * 1. Steven (Bumjin) Kim
+ *    bkim63@jhu.edu
  * 2. Rebecca Shao
+ *    rshao5@jhu.edu
  */
 
 #ifndef MEMORY_H
@@ -18,18 +20,14 @@
 
 #include "counter.h"
 
-using std::make_pair;
-using std::uint32_t;
-using std::vector;
-
-namespace bkim63 {
+namespace CacheSimulator {
     class Memory {
     public:
         void readLine(const std::string &line);
 
-        vector<uint32_t> readBlock(uint32_t address, uint32_t block_size);
+        std::vector<uint32_t> readBlock(uint32_t address, uint32_t block_size);
 
-        void writeBlock(uint32_t address, vector<uint32_t> data);
+        void writeBlock(uint32_t address, std::vector<uint32_t> data);
 
         void writeWord(uint32_t address, uint32_t data);
 
@@ -40,8 +38,8 @@ namespace bkim63 {
     private:
         std::map<uint32_t, uint32_t> _data;
 
-        mutable vector<uint32_t> _reads;
-        mutable vector<std::pair<uint32_t, uint32_t> > _writes;
+        mutable std::vector<uint32_t> _reads;
+        mutable std::vector<std::pair<uint32_t, uint32_t> > _writes;
         mutable Counter _num_writes;
     };
 }

@@ -3,14 +3,16 @@
  * Source file for Cache Class
  * Assignment 3
  * 1. Steven (Bumjin) Kim
+ *    bkim63@jhu.edu
  * 2. Rebecca Shao
+ *    rshao5@jhu.edu
  */
 
 #include "cache.h"
 #include "cacheconfig.h"
 #include "cacheblock.h"
 
-namespace bkim63 {
+namespace CacheSimulator {
     Cache::Cache(CacheConfig &cacheConfig) : _cache_config(cacheConfig) {
         _total_loads = 0;
         _total_sets = 0;
@@ -86,15 +88,15 @@ namespace bkim63 {
         _cache_config = cacheConfig;
     }
 
-    vector<CacheBlock *> Cache::getBlocksInSet(uint32_t index) const {
+    std::vector<CacheBlock *> Cache::getBlocksInSet(uint32_t index) const {
         uint32_t num_sets = _cache_config.getSize() / _cache_config.getNumBytes() / _cache_config.getAssociativity();
 
         assert(index < num_sets);
 
-        auto first_block = _blocks.begin() + (index * _cache_config.getAssociativity());
-        auto last_block = first_block + _cache_config.getAssociativity();
+        std::__wrap_iter<CacheBlock *const *> first_block = _blocks.begin() + (index * _cache_config.getAssociativity());
+        std::__wrap_iter<CacheBlock *const *> last_block = first_block + _cache_config.getAssociativity();
 
-        vector<CacheBlock *> set(first_block, last_block);
+        std::vector<CacheBlock *> set(first_block, last_block);
         return set;
     }
 
@@ -109,8 +111,8 @@ namespace bkim63 {
     }
 
     Cache::~Cache() {
-        for (auto block : _blocks) {
-            delete block;
+        for (size_t i = 0; i < _blocks.size(); i++) {
+            delete _blocks[i];
         }
     }
 

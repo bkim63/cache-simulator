@@ -1,6 +1,6 @@
 /**
  * CSF Fall 2020
- * Cache implementation
+ * Cache config function and data type declarations
  * Assignment 3
  * 1. Steven (Bumjin) Kim
  * 2. Rebecca Shao
@@ -11,7 +11,7 @@
 
 #include <cstdint>
 
-namespace bkim63 {
+namespace CacheSimulator {
     enum Allocation {
         WRITE_ALLOCATE,
         NO_WRITE_ALLOCATE
@@ -54,8 +54,8 @@ namespace bkim63 {
         void setCacheMapping(uint32_t, uint32_t);
 
     public:
-        CacheConfig(uint32_t size, uint32_t numSets, uint32_t numBlocks, uint32_t numBytes, Allocation allocation, Write write,
-                    CacheEviction evictionType);
+        CacheConfig(uint32_t size, uint32_t numSets, uint32_t numBlocks, uint32_t numBytes, Allocation allocation,
+                    Write write, CacheEviction evictionType);
 
         uint32_t getAssociativity() const;
 

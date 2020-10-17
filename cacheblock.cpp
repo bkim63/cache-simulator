@@ -1,16 +1,22 @@
 /**
  * CSF Fall 2020
+<<<<<<< HEAD
  * Source file for CacheBlock class
+=======
+ * Cache block implementation
+>>>>>>> e7b8c88eb752cb64fc26e456ef9abe94cc893046
  * Assignment 3
  * 1. Steven (Bumjin) Kim
+ *    bkim63@jhu.edu
  * 2. Rebecca Shao
+ *    rshao5@jhu.edu
  */
 
 #include "cacheblock.h"
 #include "cacheconfig.h"
 #include <vector>
 
-namespace bkim63 {
+namespace CacheSimulator {
     uint32_t CacheBlock::getAddress() const {
         uint32_t offset_bits = _cache_config.getNumBlockOffsetBits();
         uint32_t index_bits = _cache_config.getNumIndexBits();
