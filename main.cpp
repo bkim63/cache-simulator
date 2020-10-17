@@ -1,6 +1,6 @@
 /**
  * CSF Fall 2020
- * Cache implementation
+ * Main function to read trace from input and call cache simulator for simulation
  * Assignment 3
  * 1. Steven (Bumjin) Kim
  * 2. Rebecca Shao
@@ -15,6 +15,7 @@ using namespace std;
 int main(int argc, char *argv[]) {
 
     if (argc == 7) {
+        /* we got right number of arguments so process them */
         uint32_t num_sets = strtoul(argv[1], NULL, 10);
         uint32_t num_blocks = strtoul(argv[2], NULL, 10);
         uint32_t num_bytes = strtoul(argv[3], NULL, 10);

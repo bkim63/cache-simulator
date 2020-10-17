@@ -1,6 +1,6 @@
 /**
  * CSF Fall 2020
- * Cache implementation
+ * Header file for general helper functions
  * Assignment 3
  * 1. Steven (Bumjin) Kim
  * 2. Rebecca Shao
@@ -25,7 +25,6 @@ namespace bkim63 {
     bool isPowerOf2(uint32_t num);
     
     uint32_t log2(uint32_t num);
-
 }
 
 #endif

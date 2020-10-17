@@ -1,6 +1,6 @@
 /**
  * CSF Fall 2020
- * Cache implementation
+ * Source file for cache configuration functions
  * Assignment 3
  * 1. Steven (Bumjin) Kim
  * 2. Rebecca Shao
