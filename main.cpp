@@ -12,6 +12,7 @@
 #include <sstream>
 #include "cachesimulator.h"
 #include <string>
+#include <cstring>
 
 CacheSimulator::CacheConfig getConfig(char *const *argv);
 

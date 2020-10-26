@@ -93,8 +93,8 @@ namespace CacheSimulator {
 
         assert(index < num_sets);
 
-        std::__wrap_iter<CacheBlock *const *> first_block = _blocks.begin() + (index * _cache_config.getAssociativity());
-        std::__wrap_iter<CacheBlock *const *> last_block = first_block + _cache_config.getAssociativity();
+        auto first_block = _blocks.begin() + (index * _cache_config.getAssociativity());
+        auto last_block = first_block + _cache_config.getAssociativity();
 
         std::vector<CacheBlock *> set(first_block, last_block);
         return set;
