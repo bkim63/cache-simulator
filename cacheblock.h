@@ -1,10 +1,6 @@
 /**
  * CSF Fall 2020
-<<<<<<< HEAD
- * Header file for CacheBlock class
-=======
- * Cache block function declarations
->>>>>>> e7b8c88eb752cb64fc26e456ef9abe94cc893046
+ * Cache block header file and function declarations
  * Assignment 3
  * 1. Steven (Bumjin) Kim
  *    bkim63@jhu.edu

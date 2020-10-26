@@ -1,10 +1,7 @@
 /**
  * CSF Fall 2020
-<<<<<<< HEAD
- * Main function to read trace from input and call cache simulator for simulation
-=======
- * Cache main implementation
->>>>>>> e7b8c88eb752cb64fc26e456ef9abe94cc893046
+ * Cache simulator's main implementation file.
+ * It initializes simulation and reads trace data from input.
  * Assignment 3
  * 1. Steven (Bumjin) Kim
  *    bkim63@jhu.edu
@@ -16,21 +13,10 @@
 #include "cachesimulator.h"
 #include <string>
 
-void printHelp();
-
-<<<<<<< HEAD
-int main(int argc, char *argv[]) {
-
-    if (argc == 7) {
-        /* we got right number of arguments so process them */
-        uint32_t num_sets = strtoul(argv[1], NULL, 10);
-        uint32_t num_blocks = strtoul(argv[2], NULL, 10);
-        uint32_t num_bytes = strtoul(argv[3], NULL, 10);
-=======
 CacheSimulator::CacheConfig getConfig(char *const *argv);
->>>>>>> e7b8c88eb752cb64fc26e456ef9abe94cc893046
 
 void displaySimulator(CacheSimulator::Memory &memory, CacheSimulator::CacheSimulator *cacheSimulator);
+void printHelp();
 
 int main(int argc, char *argv[]) {
     if (argc == 7) {

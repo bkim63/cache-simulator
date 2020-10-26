@@ -1,10 +1,6 @@
 /**
  * CSF Fall 2020
-<<<<<<< HEAD
- * Source file for Memory Class
-=======
- * Cache memory implementation
->>>>>>> e7b8c88eb752cb64fc26e456ef9abe94cc893046
+ * Memory class implementation
  * Assignment 3
  * 1. Steven (Bumjin) Kim
  *    bkim63@jhu.edu

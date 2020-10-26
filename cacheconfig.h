@@ -3,7 +3,9 @@
  * Cache config function and data type declarations
  * Assignment 3
  * 1. Steven (Bumjin) Kim
+ *    bkim63@jhu.edu
  * 2. Rebecca Shao
+ *    rshao5@jhu.edu
  */
 
 #ifndef CACHE_CONFIG_H

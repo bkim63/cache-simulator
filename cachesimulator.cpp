@@ -1,10 +1,6 @@
 /**
  * CSF Fall 2020
-<<<<<<< HEAD
- * Source file for CacheSimulator class
-=======
- * Cache simulator implementation
->>>>>>> e7b8c88eb752cb64fc26e456ef9abe94cc893046
+ * Cache simulator implementation file
  * Assignment 3
  * 1. Steven (Bumjin) Kim
  *    bkim63@jhu.edu
