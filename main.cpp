@@ -17,8 +17,6 @@
 #include <string>
 #include <cstring>
 
-#define bits 32
-
 void printHelp() {
     std::cout << "No proper argument passed to program\n";
     std::cout << "Usage: " << "./csim <number-of-sets>"
@@ -41,17 +39,17 @@ int main(int argc, char *argv[]) {
 
     if (argc == 7) {
         // arguments check
-        int check = CacheSimulator::convertToInteger(argv[1]);
+        numBlocks = std::stoi(argv[2]);
+        int check = CacheSimulator::convertToInteger(argv[3]);
+        if (check == -1)
+            return 1;
+
+        check = CacheSimulator::convertToInteger(argv[1]);
         if (check == -1)
             return 1;
 
         numSets = std::stoi(argv[1]);
         check = CacheSimulator::convertToInteger(argv[2]);
-        if (check == -1)
-            return 1;
-
-        numBlocks = std::stoi(argv[2]);
-        check = CacheSimulator::convertToInteger(argv[3]);
         if (check == -1)
             return 1;
 
@@ -62,12 +60,12 @@ int main(int argc, char *argv[]) {
             return 1;
         }
 
-        cacheStore = CacheSimulator::getCacheMissStrategy(argv[4]);
-        if (cacheStore == -1)
-            return 1;
-
         memoryWrite = CacheSimulator::getCacheWriteStrategy(argv[5]);
         if (memoryWrite == -1)
+            return 1;
+
+        cacheStore = CacheSimulator::getCacheMissStrategy(argv[4]);
+        if (cacheStore == -1)
             return 1;
 
         if (cacheStore == 1 && memoryWrite == 1) {
@@ -80,16 +78,17 @@ int main(int argc, char *argv[]) {
         if (evict == -1)
             return 1;
 
+
         int numBitIndex = CacheSimulator::getPowerTwo(numSets);
         int numBitOffset = CacheSimulator::getPowerTwo(blockSize);
 
         if (numBitIndex == -1 || numBitOffset == -1)
             return 1;
 
+
         int numBitTag = 32 - numBitOffset - numBitIndex;
 
         CacheSimulator::Cache cache = CacheSimulator::Cache(numSets, numBlocks, blockSize, cacheStore, memoryWrite, evict);
-
         std::string firstTag = "";
 
         bool dirty = false;
@@ -124,12 +123,13 @@ int main(int argc, char *argv[]) {
                 printHelp();
                 return 1;
             }
+            CacheSimulator::CacheSet *set = cache.findSet(index);
 
-            if (cache.findSet(index)->getNumBlocksStored() == 0) {
+            if (set->getNumBlocksStored() == 0) {
                 CacheSimulator::CacheBlock *block = new CacheSimulator::CacheBlock(tag);
                 if (dirty) {
-                    block->setDirty();
                     dirty = false;
+                    block->setDirty();
                 }
                 cache.findSet(index)->addBlock(*block);
                 delete block;

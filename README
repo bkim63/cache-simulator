@@ -5,9 +5,7 @@ CSF Assignment 3
 
 
 Finished The Tests
-===========
-
-
+===================
 gcc.trace
 -------------------
 ./csim 256 4 16 write-allocate write-back fifo
