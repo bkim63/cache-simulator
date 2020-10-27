@@ -38,26 +38,26 @@ namespace CacheSimulator {
     class CacheConfig {
         uint32_t _size;
 
-        uint32_t _num_sets;
-        uint32_t _num_blocks;
-        uint32_t _num_bytes;
+        uint32_t _numSets;
+        uint32_t _numBlocks;
+        uint32_t _numBytes;
 
-        uint32_t _num_block_offset_bits;
-        uint32_t _num_index_bits;
-        uint32_t _num_tag_bits;
+        uint32_t _numBlockOffsetBits;
+        uint32_t _numIndexBits;
+        uint32_t _numTagBits;
         uint32_t _associativity;
 
         Allocation _allocation;
         Write _write;
 
-        CacheEviction _eviction_type;
-        CacheMapping _mapping_type;
+        CacheEviction _evictionType;
+        CacheMapping _mappingType;
 
         void setCacheMapping(uint32_t, uint32_t);
 
     public:
-        CacheConfig(uint32_t size, uint32_t numSets, uint32_t numBlocks, uint32_t numBytes, Allocation allocation,
-                    Write write, CacheEviction evictionType);
+        CacheConfig(uint32_t numSets, uint32_t numBlocks, uint32_t numBytes, Allocation allocation, Write write,
+                    CacheEviction evictionType);
 
         uint32_t getAssociativity() const;
 

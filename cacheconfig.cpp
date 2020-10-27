@@ -15,31 +15,27 @@ using namespace std;
 
 namespace CacheSimulator {
     unsigned int CacheConfig::getNumSets() const {
-        return _num_sets;
+        return _numSets;
     }
 
     unsigned int CacheConfig::getNumBlocks() const {
-        return _num_blocks;
+        return _numBlocks;
     }
 
     unsigned int CacheConfig::getNumBytes() const {
-        return _num_bytes;
-    }
-
-    unsigned int CacheConfig::getSize() const {
-        return _size;
+        return _numBytes;
     }
 
     unsigned int CacheConfig::getNumBlockOffsetBits() const {
-        return _num_block_offset_bits;
+        return _numBlockOffsetBits;
     }
 
     unsigned int CacheConfig::getNumIndexBits() const {
-        return _num_index_bits;
+        return _numIndexBits;
     }
 
     unsigned int CacheConfig::getNumTagBits() const {
-        return _num_tag_bits;
+        return _numTagBits;
     }
 
     Allocation CacheConfig::getAllocation() const {
@@ -51,39 +47,35 @@ namespace CacheSimulator {
     }
 
     CacheEviction CacheConfig::getEvictionType() const {
-        return _eviction_type;
+        return _evictionType;
     }
 
     CacheMapping CacheConfig::getMappingType() const {
-        return _mapping_type;
+        return _mappingType;
     }
 
     void CacheConfig::setNumSets(uint32_t numSets) {
-        _num_sets = numSets;
+        _numSets = numSets;
     }
 
     void CacheConfig::setNumBlocks(uint32_t numBlocks) {
-        _num_blocks = numBlocks;
+        _numBlocks = numBlocks;
     }
 
     void CacheConfig::setNumBytes(uint32_t numBytes) {
-        _num_bytes = numBytes;
-    }
-
-    void CacheConfig::setSize(uint32_t size) {
-        _size = size;
+        _numBytes = numBytes;
     }
 
     void CacheConfig::setNumBlockOffsetBits(uint32_t numBlockOffsetBits) {
-        _num_block_offset_bits = numBlockOffsetBits;
+        _numBlockOffsetBits = numBlockOffsetBits;
     }
 
     void CacheConfig::setNumIndexBits(uint32_t numIndexBits) {
-        _num_index_bits = numIndexBits;
+        _numIndexBits = numIndexBits;
     }
 
     void CacheConfig::setNumTagBits(uint32_t numTagBits) {
-        _num_tag_bits = numTagBits;
+        _numTagBits = numTagBits;
     }
 
     void CacheConfig::setAllocation(Allocation allocation) {
@@ -95,38 +87,36 @@ namespace CacheSimulator {
     }
 
     void CacheConfig::setEvictionType(CacheEviction evictionType) {
-        _eviction_type = evictionType;
+        _evictionType = evictionType;
     }
 
     void CacheConfig::setMappingType(CacheMapping mappingType) {
-        _mapping_type = mappingType;
+        _mappingType = mappingType;
     }
 
-    void CacheConfig::setCacheMapping(uint32_t num_blocks, uint32_t num_sets) {
-        if (num_blocks == 1 && num_sets > 1)
-            _mapping_type = DIRECT_MAPPED;
-        else if (num_blocks > 1 && num_sets > 1)
-            _mapping_type = SET_ASSOCIATIVE;
-        else if (num_sets == 1 && num_blocks > 1)
-            _mapping_type = FULLY_ASSOCIATIVE;
+    void CacheConfig::setCacheMapping(uint32_t numBlocks, uint32_t numSets) {
+        if (numBlocks == 1 && numSets > 1)
+            _mappingType = DIRECT_MAPPED;
+        else if (numBlocks > 1 && numSets > 1)
+            _mappingType = SET_ASSOCIATIVE;
+        else if (numSets == 1 && numBlocks > 1)
+            _mappingType = FULLY_ASSOCIATIVE;
     }
 
-    CacheConfig::CacheConfig(uint32_t size, uint32_t numSets, uint32_t numBlocks, uint32_t numBytes,
+    CacheConfig::CacheConfig(uint32_t numSets, uint32_t numBlocks, uint32_t numBytes,
                              Allocation allocation, Write write, CacheEviction evictionType) :
-            _size(size), _num_sets(numSets), _num_blocks(numBlocks), _num_bytes(numBytes),
-            _allocation(allocation), _write(write), _eviction_type(evictionType) {
+            _numSets(numSets), _numBlocks(numBlocks), _numBytes(numBytes),
+            _allocation(allocation), _write(write), _evictionType(evictionType) {
 
         setCacheMapping(numBlocks, numSets);
 
-        _associativity = _mapping_type == DIRECT_MAPPED ? 1 : _num_blocks;
+        _associativity = _mappingType == DIRECT_MAPPED ? 1 : _numBlocks;
+        _numBlockOffsetBits = log2(_numBytes);
 
-        _num_block_offset_bits = log2(_num_bytes);
+        uint32_t index = (_numBytes * numSets * numBlocks) / (_associativity * _numBytes);
 
-        uint32_t index = (size / (_associativity * _num_bytes));
-
-        _num_index_bits = log2(index);
-
-        _num_tag_bits = 32 - _num_index_bits - _num_block_offset_bits;
+        _numIndexBits = log2(index);
+        _numTagBits = 32 - _numIndexBits - _numBlockOffsetBits;
     }
 
     uint32_t CacheConfig::getAssociativity() const {

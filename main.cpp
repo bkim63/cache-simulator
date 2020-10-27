@@ -1,7 +1,6 @@
 /**
  * CSF Fall 2020
- * Cache simulator's main implementation file.
- * It initializes simulation and reads trace data from input.
+ * Cache counter implementation
  * Assignment 3
  * 1. Steven (Bumjin) Kim
  *    bkim63@jhu.edu
@@ -9,72 +8,19 @@
  *    rshao5@jhu.edu
  */
 
+#include "utils.h"
+#include "cacheset.h"
+#include "cacheblock.h"
+#include "cache.h"
+
 #include <sstream>
-#include "cachesimulator.h"
 #include <string>
 #include <cstring>
 
-CacheSimulator::CacheConfig getConfig(char *const *argv);
-
-void displaySimulator(CacheSimulator::Memory &memory, CacheSimulator::CacheSimulator *cacheSimulator);
-void printHelp();
-
-int main(int argc, char *argv[]) {
-    if (argc == 7) {
-        CacheSimulator::CacheConfig cacheConfig = getConfig(argv);
-        CacheSimulator::Cache cache(cacheConfig);
-        CacheSimulator::Memory memory;
-
-        CacheSimulator::CacheSimulator *cacheSimulator = new CacheSimulator::CacheSimulator(&cache, &memory);
-
-        displaySimulator(memory, cacheSimulator);
-    } else {
-        printHelp();
-        return 0;
-    }
-    return 0;
-}
-
-void displaySimulator(CacheSimulator::Memory &memory, CacheSimulator::CacheSimulator *cacheSimulator) {
-    for (std::string line; getline(std::cin, line);) {
-        memory.readLine(line);
-
-        uint32_t address, data;
-        std::string loading;
-        std::istringstream string_stream(line);
-
-        string_stream >> loading >> std::hex >> address >> std::dec >> data;
-
-        if (loading == "l") {
-            cacheSimulator->read(address);
-        } else if (loading == "s") {
-            cacheSimulator->write(address, data);
-        }
-    }
-    cacheSimulator->display();
-}
-
-CacheSimulator::CacheConfig getConfig(char *const *argv) {
-    uint32_t num_sets = strtoul(argv[1], NULL, 10);
-    uint32_t num_blocks = strtoul(argv[2], NULL, 10);
-    uint32_t num_bytes = strtoul(argv[3], NULL, 10);
-
-    CacheSimulator::Allocation allocate = strcmp(argv[4], "write-allocate") ?
-                                          CacheSimulator::WRITE_ALLOCATE : CacheSimulator::NO_WRITE_ALLOCATE;
-    CacheSimulator::Write write = strcmp(argv[5], "write-back") ?
-                                  CacheSimulator::WRITE_BACK : CacheSimulator::WRITE_THROUGH;
-    CacheSimulator::CacheEviction eviction = strcmp(argv[6], "lru") ?
-                                             CacheSimulator::LRU : CacheSimulator::FIFO;
-
-    CacheSimulator::CacheConfig cacheConfig = CacheSimulator::CacheConfig(16777216, num_sets, num_blocks, num_bytes,
-                                                                          allocate,
-                                                                          write,
-                                                                          eviction);
-    return cacheConfig;
-}
+#define bits 32
 
 void printHelp() {
-    std::cout << "No argument passed to program\n";
+    std::cout << "No proper argument passed to program\n";
     std::cout << "Usage: " << "./csim <number-of-sets>"
               << " <number-of-blocks>"
               << " <number-of-bytes>"
@@ -82,4 +28,128 @@ void printHelp() {
               << " <write>"
               << " <cache-eviction>"
               << " < <filename>\n";
+}
+
+int main(int argc, char *argv[]) {
+
+    int numSets = 0;
+    int numBlocks = 0;
+    int blockSize = 0;
+    int cacheStore = 0;
+    int memoryWrite = 0;
+    int evict = 0;
+
+    if (argc == 7) {
+        // arguments check
+        int check = CacheSimulator::convertToInteger(argv[1]);
+        if (check == -1)
+            return 1;
+
+        numSets = std::stoi(argv[1]);
+        check = CacheSimulator::convertToInteger(argv[2]);
+        if (check == -1)
+            return 1;
+
+        numBlocks = std::stoi(argv[2]);
+        check = CacheSimulator::convertToInteger(argv[3]);
+        if (check == -1)
+            return 1;
+
+        blockSize = std::stoi(argv[3]);
+        if (blockSize < 4) {
+            std::cerr << "The number of bytes must be greater than or equal to 4 bytes" << std::endl;
+            printHelp();
+            return 1;
+        }
+
+        cacheStore = CacheSimulator::getCacheMissStrategy(argv[4]);
+        if (cacheStore == -1)
+            return 1;
+
+        memoryWrite = CacheSimulator::getCacheWriteStrategy(argv[5]);
+        if (memoryWrite == -1)
+            return 1;
+
+        if (cacheStore == 1 && memoryWrite == 1) {
+            std::cerr << "Cannot simulate no-write-allocate and write-back at the same time" << std::endl;
+            printHelp();
+            return 1;
+        }
+
+        evict = CacheSimulator::shouldEvict(argv[6]);
+        if (evict == -1)
+            return 1;
+
+        int numBitIndex = CacheSimulator::getPowerTwo(numSets);
+        int numBitOffset = CacheSimulator::getPowerTwo(blockSize);
+
+        if (numBitIndex == -1 || numBitOffset == -1)
+            return 1;
+
+        int numBitTag = 32 - numBitOffset - numBitIndex;
+
+        CacheSimulator::Cache cache = CacheSimulator::Cache(numSets, numBlocks, blockSize, cacheStore, memoryWrite, evict);
+
+        std::string firstTag = "";
+
+        bool dirty = false;
+        bool noErr = false;
+
+        for (std::string line; getline(std::cin, line);) {
+            uint32_t address, data;
+            std::string operation;
+            std::istringstream string_stream(line);
+
+            string_stream >> operation >> std::hex >> address >> std::dec >> data;
+
+            std::string index = CacheSimulator::getIndex(numBitIndex, numBitTag, address);
+            std::string tag = CacheSimulator::getTag(numBitTag, address);
+
+            if (operation == "l") {
+                // read from cache
+                check = cache.read(index, tag, firstTag);
+                if (check != 0) {
+                    std::cerr << "Failed to read from cache." << std::endl;
+                    return 1;
+                }
+            } else if (operation == "s") {
+                // write to cache
+                check = cache.write(index, tag, firstTag, dirty);
+                if (check == -1) {
+                    std::cerr << "Failed to write to cache." << std::endl;
+                    return 1;
+                }
+            } else {
+                std::cerr << "Invalid operation" << std::endl;
+                printHelp();
+                return 1;
+            }
+
+            if (cache.findSet(index)->getNumBlocksStored() == 0) {
+                CacheSimulator::CacheBlock *block = new CacheSimulator::CacheBlock(tag);
+                if (dirty) {
+                    block->setDirty();
+                    dirty = false;
+                }
+                cache.findSet(index)->addBlock(*block);
+                delete block;
+            }
+
+            noErr = true;
+        }
+
+        if (!noErr && firstTag.compare("") != 0) {
+            std::cerr << "Failed tracing" << std::endl;
+            printHelp();
+            return 1;
+        }
+
+        cache.displaySimulator();
+        return 0;
+
+    } else {
+        printHelp();
+        return 1;
+    }
+
 }

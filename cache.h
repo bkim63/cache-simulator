@@ -1,6 +1,6 @@
 /**
  * CSF Fall 2020
- * Cache header file and function declarations
+ * Cache counter implementation
  * Assignment 3
  * 1. Steven (Bumjin) Kim
  *    bkim63@jhu.edu
@@ -11,72 +11,62 @@
 #ifndef CACHE_H
 #define CACHE_H
 
-#include <iostream>
-#include <list>
-#include <iterator>
 #include <unordered_map>
-#include <vector>
+#include <string>
+#include "cacheset.h"
 
 namespace CacheSimulator {
-    class CacheBlock;
-    class CacheConfig;
-
     class Cache {
     public:
-        std::vector<CacheBlock *> getBlocksInSet(uint32_t index) const;
+        Cache() {};
 
-        Cache(CacheConfig &cacheConfig);
+        Cache(int numSets, int numBlocks, int blockSize, int cacheStore, int memoryWrite, int evict) {
+            _numSets = numSets;
+            _numBlocks = numBlocks;
+            _blockSize = blockSize;
+            _cacheStore = cacheStore;
+            _memoryWrite = memoryWrite;
+            _evict = evict;
+        }
 
-        ~Cache();
+        CacheSet *addSet(std::string index);
+        CacheSet *findSet(std::string index);
 
-        int getTotalLoads() const;
+        int getNumSets() {
+            return _num_sets_stored;
+        }
 
-        void setTotalLoads(int totalLoads);
+        int read(std::string index, std::string tag, std::string &firstTag);
+        int write(std::string index, std::string tag, std::string &firstTag, bool &dirty);
 
-        int getTotalSets() const;
-
-        void setTotalSets(int totalSets);
-
-        int getLoadHits() const;
-
-        void setLoadHits(int loadHits);
-
-        int getLoadMisses() const;
-
-        void setLoadMisses(int loadMisses);
-
-        int getSetHits() const;
-
-        void setSetHits(int setHits);
-
-        int getSetMisses() const;
-
-        void setSetMisses(int setMisses);
-
-        int getTotalCycles() const;
-
-        void setTotalCycles(int totalCycles);
-
-        void setCacheConfig(CacheConfig &cacheConfig);
-
-        CacheConfig &getCacheConfig() const;
-
-        void setCacheConfig1(CacheConfig &cacheConfig);
+        void displaySimulator();
 
     private:
-        int _total_loads;
-        int _total_sets;
+        // instance variables initialized as 0
+        int _num_sets_stored = 0;
+        int _numSets = 0;
+        int _numBlocks = 0;
+        int _blockSize = 0;
+        int _cacheStore = 0;
+        int _memoryWrite = 0;
+        int _evict = 0;
+        int _loadHits = 0;
+        int _loadMisses = 0;
+        int _storeHits = 0;
+        int _storeMisses = 0;
+        int _numCycles = 0;
 
-        int _load_hits;
-        int _load_misses;
-        int _set_hits;
-        int _set_misses;
-        int _total_cycles;
+        // read functions
+        void readFromCache(CacheBlock *block, CacheSet *set, std::string tag);
 
-        CacheConfig &_cache_config;
-        std::vector<CacheBlock*> _blocks;
+        // write functions
+        void writeToCache(CacheSet *set, CacheBlock *block, std::string tag);
+        void writeLogic(CacheSet *set, CacheBlock *block, std::string tag);
+        void updateBlock(CacheSet *set, CacheBlock *block, std::string tag);
+        void writeCache(CacheSet *set, CacheBlock *block, std::string &firstTag, bool &firstDirty, std::string index, std::string tag);
 
-        void initBlocks();
+        // set dictionary
+        std::unordered_map <std::string, CacheSet> sets;
     };
 }
 

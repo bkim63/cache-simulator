@@ -1,6 +1,6 @@
 /**
  * CSF Fall 2020
- * Source file for Cache Class
+ * Cache counter implementation
  * Assignment 3
  * 1. Steven (Bumjin) Kim
  *    bkim63@jhu.edu
@@ -8,120 +8,207 @@
  *    rshao5@jhu.edu
  */
 
+#include <unordered_map>
+#include <map>
+#include <string>
 #include "cache.h"
-#include "cacheconfig.h"
-#include "cacheblock.h"
 
 namespace CacheSimulator {
-    Cache::Cache(CacheConfig &cacheConfig) : _cache_config(cacheConfig) {
-        _total_loads = 0;
-        _total_sets = 0;
+    CacheSet *Cache::addSet(std::string index) {
+        CacheSet *set = new CacheSet();
+        sets[index] = *set;
+        _num_sets_stored++;
 
-        _load_hits = 0;
-        _load_misses = 0;
-
-        _set_hits = 0;
-        _set_misses = 0;
-
-        _total_cycles = 0;
-
-        initBlocks();
-    }
-
-    int Cache::getTotalLoads() const {
-        return _total_loads;
-    }
-
-    void Cache::setTotalLoads(int totalLoads) {
-        _total_loads = totalLoads;
-    }
-
-    int Cache::getTotalSets() const {
-        return _total_sets;
-    }
-
-    void Cache::setTotalSets(int totalSets) {
-        _total_sets = totalSets;
-    }
-
-    int Cache::getLoadHits() const {
-        return _load_hits;
-    }
-
-    void Cache::setLoadHits(int loadHits) {
-        _load_hits = loadHits;
-    }
-
-    int Cache::getLoadMisses() const {
-        return _load_misses;
-    }
-
-    void Cache::setLoadMisses(int loadMisses) {
-        _load_misses = loadMisses;
-    }
-
-    int Cache::getSetHits() const {
-        return _set_hits;
-    }
-
-    void Cache::setSetHits(int setHits) {
-        _set_hits = setHits;
-    }
-
-    int Cache::getSetMisses() const {
-        return _set_misses;
-    }
-
-    void Cache::setSetMisses(int setMisses) {
-        _set_misses = setMisses;
-    }
-
-    int Cache::getTotalCycles() const {
-        return _total_cycles;
-    }
-
-    void Cache::setTotalCycles(int totalCycles) {
-        _total_cycles = totalCycles;
-    }
-
-    void Cache::setCacheConfig(CacheConfig &cacheConfig) {
-        _cache_config = cacheConfig;
-    }
-
-    std::vector<CacheBlock *> Cache::getBlocksInSet(uint32_t index) const {
-        uint32_t num_sets = _cache_config.getSize() / _cache_config.getNumBytes() / _cache_config.getAssociativity();
-
-        assert(index < num_sets);
-
-        auto first_block = _blocks.begin() + (index * _cache_config.getAssociativity());
-        auto last_block = first_block + _cache_config.getAssociativity();
-
-        std::vector<CacheBlock *> set(first_block, last_block);
         return set;
     }
 
-    void Cache::initBlocks() {
-        uint32_t num_blocks = _cache_config.getSize() / _cache_config.getNumBytes();
+    CacheSet *Cache::findSet(std::string index) {
+        std::unordered_map<std::string, CacheSet>::iterator it = sets.find(index);
 
-        for (uint32_t i = 0; i < num_blocks; ++i) {
-            uint32_t index = i / _cache_config.getAssociativity();
-            CacheBlock *block = new CacheBlock(index, _cache_config);
-            _blocks.push_back(block);
+        if (it != sets.end())
+            return &sets[index];
+
+        return new CacheSet(true);
+    }
+
+    void Cache::readFromCache(CacheBlock *block, CacheSet *set, std::string tag) {
+        if (block->isEmpty()) {
+            delete block;
+
+            _loadMisses++;
+            _numCycles += 100 * _blockSize / 4 + 1;
+
+            if (set->getNumBlocksStored() == _numBlocks) {
+                block = set->findBlockFromTime(_numBlocks - 1);
+                if (_memoryWrite == 1 && block->getDirty()) {
+                    _numCycles += 100 * _blockSize / 4;
+                    block->clearDirty();
+                }
+                set->countTimerAll();
+                block->resetTime();
+                block->updateTag(tag);
+            } else {
+                set->countTimerAll();
+                block = new CacheBlock(tag);
+                set->addBlock(*block);
+                delete block;
+            }
+        } else {
+            _loadHits++;
+            _numCycles++;
+            if (_evict == 0)
+                set->countTimer(block->getTime());
         }
     }
 
-    Cache::~Cache() {
-        for (size_t i = 0; i < _blocks.size(); i++) {
-            delete _blocks[i];
+    int Cache::read(std::string index, std::string tag, std::string &firstTag) {
+        CacheSet *set = findSet(index);
+        CacheBlock *block;
+
+        if (set->isEmpty()) {
+            delete set;
+            if (getNumSets() == _numSets) {
+                std::cerr << "Index is invalid" << std::endl;
+                return -1;
+            }
+            _loadMisses++;
+
+            set = addSet(index);
+            block = new CacheBlock(tag);
+            set->addBlock(*block);
+            firstTag = tag;
+
+            _numCycles += 100 * _blockSize / 4 + 1;
+
+            delete set;
+            delete block;
+        } else {
+            block = set->findBlock(tag);
+            readFromCache(block, set, tag);
+        }
+        set = NULL;
+        block = NULL;
+
+        return 0;
+    }
+
+    int Cache::write(std::string index, std::string tag, std::string &firstTag, bool &firstDirty) {
+        CacheSet *set = findSet(index);
+        CacheBlock *block = nullptr;
+
+        if (set->isEmpty()) {
+            delete set;
+            _storeMisses++;
+
+            if (getNumSets() == _numSets) {
+                std::cerr << "Invalid index" << std::endl;
+                return -1;
+            }
+
+            writeCache(set, block, firstTag, firstDirty, index, tag);
+
+        } else {
+            writeLogic(set, block, tag);
+        }
+        set = nullptr;
+        block = nullptr;
+
+        return 0;
+    }
+
+    void Cache::writeCache(CacheSet *set, CacheBlock *block, std::string &firstTag, bool &firstDirty, std::string index, std::string tag) {
+        if (_cacheStore == 0) {
+            set = addSet(index);
+            block = new CacheBlock(tag);
+            set->addBlock(*block);
+
+            firstTag = tag;
+            firstDirty = true;
+
+            delete set;
+            delete block;
+
+            _numCycles += 100 * _blockSize / 4;
+
+            if (_memoryWrite == 0)
+                _numCycles += 101;
+            else
+                _numCycles++;
+        } else
+            _numCycles += 100;
+    }
+
+    void Cache::writeLogic(CacheSet *set, CacheBlock *block, std::string tag) {
+        block = set->findBlock(tag);
+
+        if (block->isEmpty()) {
+            writeToCache(set, block, tag);
+        } else {
+            _storeHits++;
+
+            if (_memoryWrite == 1)
+                block->setDirty();
+            if (_cacheStore == 1)
+                _numCycles += 100;
+            else if (_memoryWrite == 0)
+                _numCycles += 101;
+            else
+                _numCycles++;
+
+            if (_evict == 0)
+                set->countTimer(block->getTime());
         }
     }
 
-    CacheConfig &Cache::getCacheConfig() const {
-        return _cache_config;
+    void Cache::updateBlock(CacheSet *set, CacheBlock *block, std::string tag) {
+        if (_numBlocks == set->getNumBlocksStored()) {
+            block = set->findBlockFromTime(_numBlocks - 1);
+
+            if (_memoryWrite == 1 && block->getDirty())
+                _numCycles += 100 * _blockSize / 4;
+
+            set->countTimerAll();
+            block->resetTime();
+            block->updateTag(tag);
+        } else {
+            set->countTimerAll();
+            block = new CacheBlock(tag);
+            set->addBlock(*block);
+
+            if (_memoryWrite == 1)
+                block->setDirty();
+
+            delete block;
+        }
     }
 
-    void Cache::setCacheConfig1(CacheConfig &cacheConfig) {
-        _cache_config = cacheConfig;
+    void Cache::writeToCache(CacheSet *set, CacheBlock *block, std::string tag) {
+        delete block;
+        _storeMisses++;
+
+        if (_cacheStore == 0) {
+            updateBlock(set, block, tag);
+
+            if (_cacheStore == 0) {
+                _numCycles += 100 * _blockSize / 4;
+
+                if (_memoryWrite == 0)
+                    _numCycles += 101;
+                else
+                    _numCycles++;
+            }
+        } else
+            _numCycles += 100;
+    }
+
+    void Cache::displaySimulator() {
+        std::cout << "Total loads: " << (_loadHits + _loadMisses) << std::endl;
+        std::cout << "Total stores: " << (_storeHits + _storeMisses) << std::endl;
+        std::cout << "Load hits: " << _loadHits << std::endl;
+        std::cout << "Load misses: " << _loadMisses << std::endl;
+        std::cout << "Store hits: " << _storeHits << std::endl;
+        std::cout << "Store misses: " << _storeMisses << std::endl;
+        std::cout << "Total cycles: " << _numCycles << std::endl;
     }
 
 }

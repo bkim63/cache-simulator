@@ -1,32 +1,28 @@
-# CSF Fall 2020
-# Cache simulator
-# Assignment 3
-# 1. Steven (Bumjin) Kim
-# 2. Rebecca Shao
+CC=g++
+CFLAGS=-std=c++11 -Wall -Wextra -pedantic -g
 
-CXX = g++
-CXXFLAGS = -Wall -Wextra --pedantic
+csim: main.o utils.o cache.o cacheblock.o cacheset.o
+	$(CC) -o csim main.o utils.o cache.o cacheblock.o cacheset.o
 
-%.o : %.c
-	$(CXX) -c $(CXXFLAGS) -o $*.o $<
+main.o: main.cpp utils.h cacheblock.h cacheset.h cache.h
+	$(CC) $(CFLAGS) -c main.cpp
 
-csim : cache.o cacheblock.o cacheconfig.o cachesimulator.o memory.o counter.o main.o utils.o
-	$(CXX) -o $@ cache.o cacheblock.o cacheconfig.o cachesimulator.o memory.o counter.o main.o utils.o
+utils.o: utils.cpp utils.h
+	$(CC) $(CFLAGS) -c utils.cpp
 
-counter.o: counter.h
-memory.o: memory.h counter.h
-cache.o: cache.h cacheblock.h cacheconfig.h cache.cpp
-cacheblock.o: cache.h cacheblock.h counter.h memory.h cacheblock.cpp
-cacheconfig.o: cacheconfig.h utils.h cacheconfig.cpp
-csim.o.o: cache.h cacheblock.h cacheconfig.h \
-                  cachesimulator.h counter.h memory.h utils.h cachesimulator.cpp
-main.o: cache.h cacheconfig.h cachesimulator.h counter.h utils.h \
-        memory.h main.cpp
-utils.o: cacheconfig.h utils.h
+cache.o: cache.cpp cache.h cacheset.h
+	$(CC) $(CFLAGS) -c cache.cpp
 
+cacheblock.o: cacheblock.cpp cacheblock.h
+	$(CC) $(CFLAGS) -c cacheblock.cpp
+
+cacheset.o: cacheset.cpp cacheset.h cacheblock.h
+	$(CC) $(CFLAGS) -c cacheset.cpp
+
+clean:
+	rm -rf *.o csim
+
+.PHONY: solution.zip
 solution.zip :
 	rm -f solution.zip
-	zip -9r $@ Makefile Makefile cache.cpp cache.h cacheblock.cpp cacheblock.h cacheconfig.cpp cacheconfig.h cachesimulator.cpp cachesimulator.h counter.h counter.cpp main.cpp memory.cpp memory.h utils.cpp utils.h README
-
-clean :
-	rm -f *.o csim solution.zip
+	zip -9r $@ Makefile *.h *.cpp README
