@@ -1,6 +1,6 @@
 /**
  * CSF Fall 2020
- * Cache counter implementation
+ * CacheSet implementation
  * Assignment 3
  * 1. Steven (Bumjin) Kim
  *    bkim63@jhu.edu
