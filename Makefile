@@ -19,8 +19,8 @@ cacheblock.o: cacheblock.cpp cacheblock.h
 cacheset.o: cacheset.cpp cacheset.h cacheblock.h
 	$(CC) $(CFLAGS) -c cacheset.cpp
 
-clean:
-	rm -rf *.o csim
+clean :
+	rm -f *.o csim solution.zip
 
 .PHONY: solution.zip
 solution.zip :
