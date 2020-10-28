@@ -17,6 +17,9 @@
 #include <string>
 #include <cstring>
 
+/* 
+ * Function to print messages about cache 
+ */
 void printHelp() {
     std::cout << "No proper argument passed to program\n";
     std::cout << "Usage: " << "./csim <number-of-sets>"

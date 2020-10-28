@@ -20,7 +20,16 @@
 #define numBits 32
 
 namespace CacheSimulator {
-
+    /* 
+     * Function to print the load and store information of cache
+     * 
+     * Parameters:
+     *  loadHits - int that is number of load hits
+     *  loadMisses - int that is number of load misses
+     *  storeHits - int that is number of store hits
+     *  storeMisses - int that is number of store misses
+     *  totalCycle - int that is total number of cycles
+     */
     void displaySimulator(int loadHits, int loadMisses, int storeHits, int storeMisses, int totalCycles) {
         std::cout << "Total loads: " << (loadHits + loadMisses) << std::endl;
         std::cout << "Total stores: " << (storeHits + storeMisses) << std::endl;
@@ -31,6 +40,12 @@ namespace CacheSimulator {
         std::cout << "Total cycles: " << totalCycles << std::endl;
     }
 
+    /* 
+     * Function to get the power two of parameter value
+     * 
+     * Parameters:
+     *  val - int to get power two of
+     */
     int getPowerTwo(int val) {
         int exp = (int) (log(val) / log(2));
 
@@ -42,6 +57,15 @@ namespace CacheSimulator {
         }
     }
 
+    /* 
+     * Function to convert string into integer
+     * 
+     * Parameters:
+     *  argument - string to be converted into an integer
+     * 
+     * Returns:
+     *  int to indicate success
+     */
     int convertToInteger(std::string argument) {
         int value = -1;
         try {
@@ -63,6 +87,15 @@ namespace CacheSimulator {
         return 0;
     }
 
+    /* 
+     * Function to get cache miss strategy
+     * 
+     * Parameters:
+     *  argument - string to indicate which miss strategy to use
+     * 
+     * Returns:
+     *  int to indicate cache miss strategy
+     */
     int getCacheMissStrategy(std::string argument) {
         if (argument.compare("write-allocate") == 0)
             return 0;
@@ -74,6 +107,17 @@ namespace CacheSimulator {
         }
     }
 
+    /* 
+     * Function to get index
+     * 
+     * Parameters:
+     *  indexSize - int that is the index size
+     *  tagSize - int that is tag size
+     *  address - unsigned int that is address
+     * 
+     * Returns:
+     *  string that is the index
+     */
     std::string getIndex(int indexSize, int tagSize, unsigned int address) {
         std::bitset<numBits> bitAddress(address);
         std::string index = bitAddress.to_string();
@@ -81,6 +125,16 @@ namespace CacheSimulator {
         return index.substr(tagSize, indexSize);
     }
 
+    /* 
+     * Function to get tag
+     * 
+     * Parameters:
+     *  tagSize - int that is tag size
+     *  address - unsigned int that is address
+     * 
+     * Returns:
+     *  string that is the tag
+     */
     std::string getTag(int tagSize, unsigned int address) {
         std::bitset<numBits> bitTag(address);
         std::string tag = bitTag.to_string();
@@ -88,6 +142,15 @@ namespace CacheSimulator {
         return tag.substr(0, tagSize);
     }
 
+    /* 
+     * Function to get cache write strategy
+     * 
+     * Parameters:
+     *  argument - string to indicate which write strategy to use
+     * 
+     * Returns:
+     *  int to indicate cache write strategy
+     */
     int getCacheWriteStrategy(std::string argument) {
         if (argument.compare("write-through") == 0)
             return 0;
@@ -99,6 +162,15 @@ namespace CacheSimulator {
         }
     }
 
+    /* 
+     * Function to get eviction strategy
+     * 
+     * Parameters:
+     *  argument - string to indicate which eviction to use
+     * 
+     * Returns:
+     *  int to indicate eviction strategy
+     */
     int shouldEvict(std::string argument) {
         if (argument.compare("lru") == 0)
             return 0;

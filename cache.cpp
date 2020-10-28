@@ -14,6 +14,15 @@
 #include "cache.h"
 
 namespace CacheSimulator {
+    /* 
+     * Add set to cache
+     *
+     * Parameters:
+     *  index - string to indicate index of set added
+     * 
+     * Returns:
+     *  new CacheSet that was created 
+     */
     CacheSet *Cache::addSet(std::string index) {
         CacheSet *set = new CacheSet();
         sets[index] = *set;
@@ -22,6 +31,15 @@ namespace CacheSimulator {
         return set;
     }
 
+    /* 
+     * Find set in cache given index or return new one
+     *
+     * Parameters:
+     *  index - string to indicate index of set added
+     * 
+     * Returns:
+     *  CacheSet referred to by index given or new CacheSet
+     */
     CacheSet *Cache::findSet(std::string index) {
         std::unordered_map<std::string, CacheSet>::iterator it = sets.find(index);
 
@@ -31,6 +49,14 @@ namespace CacheSimulator {
         return new CacheSet(true);
     }
 
+    /* 
+     * Do operations necessary when reading data from cache
+     *
+     * Parameters:
+     *  block - pointer to CacheBlock instance to read from
+     *  set - pointer to CacheSet instance to read from
+     *  tag - string to indicate tag of address
+     */
     void Cache::readFromCache(CacheBlock *block, CacheSet *set, std::string tag) {
         if (block->isEmpty()) {
             delete block;
@@ -61,6 +87,17 @@ namespace CacheSimulator {
         }
     }
 
+    /* 
+     * Function to read from cache
+     *
+     * Parameters:
+     *  index - string of index to find set
+     *  tag - string to indicate tag of address
+     *  firstTag - string reference of first tag
+     * 
+     * Returns:
+     *  int to indicate whether we can read from set
+     */
     int Cache::read(std::string index, std::string tag, std::string &firstTag) {
         CacheSet *set = findSet(index);
         CacheBlock *block;
@@ -92,6 +129,18 @@ namespace CacheSimulator {
         return 0;
     }
 
+    /* 
+     * Function to write to cache
+     *
+     * Parameters:
+     *  index - string of index to find set
+     *  tag - string to indicate tag of address
+     *  firstTag - string reference of first tag
+     *  firstDirty - boolean reference to indicate first dirty bit
+     * 
+     * Returns:
+     *  int to indicate whether we can write to set
+     */
     int Cache::write(std::string index, std::string tag, std::string &firstTag, bool &firstDirty) {
         CacheSet *set = findSet(index);
         CacheBlock *block = nullptr;
@@ -116,6 +165,17 @@ namespace CacheSimulator {
         return 0;
     }
 
+    /* 
+     * Do operations necessary when writing data to cache
+     *
+     * Parameters:
+     *  set - pointer to CacheSet instance to read from
+     *  block - pointer to CacheBlock instance to read from
+     *  firstTag - string reference of first tag
+     *  firstDirty - boolean reference to indicate first dirty bit
+     *  index - string of index to find set
+     *  tag - string to indicate tag of address
+     */
     void Cache::writeCache(CacheSet *set, CacheBlock *block, std::string &firstTag, bool &firstDirty, std::string index, std::string tag) {
         if (_cacheStore == 0) {
             set = addSet(index);
@@ -138,6 +198,14 @@ namespace CacheSimulator {
             _numCycles += 100;
     }
 
+    /* 
+     * Helper method for write when set is originally nonempty
+     *
+     * Parameters:
+     *  set - pointer to CacheSet instance to read from
+     *  block - pointer to CacheBlock instance to read from
+     *  tag - string to indicate tag of address
+     */
     void Cache::writeLogic(CacheSet *set, CacheBlock *block, std::string tag) {
         block = set->findBlock(tag);
 
@@ -160,6 +228,14 @@ namespace CacheSimulator {
         }
     }
 
+    /* 
+     * Function to update indicated block
+     *
+     * Parameters:
+     *  set - pointer to CacheSet instance to read from
+     *  block - pointer to CacheBlock instance to read from
+     *  tag - string to indicate tag of address
+     */
     void Cache::updateBlock(CacheSet *set, CacheBlock *block, std::string tag) {
         if (_numBlocks == set->getNumBlocksStored()) {
             block = set->findBlockFromTime(_numBlocks - 1);
@@ -182,6 +258,14 @@ namespace CacheSimulator {
         }
     }
 
+    /* 
+     * Helper method for write when block is originally nonempty
+     *
+     * Parameters:
+     *  set - pointer to CacheSet instance to read from
+     *  block - pointer to CacheBlock instance to read from
+     *  tag - string to indicate tag of address
+     */
     void Cache::writeToCache(CacheSet *set, CacheBlock *block, std::string tag) {
         delete block;
         _storeMisses++;
@@ -201,6 +285,9 @@ namespace CacheSimulator {
             _numCycles += 100;
     }
 
+    /* 
+     * Function to display the field information of the cache
+     */
     void Cache::displaySimulator() {
         std::cout << "Total loads: " << (_loadHits + _loadMisses) << std::endl;
         std::cout << "Total stores: " << (_storeHits + _storeMisses) << std::endl;
