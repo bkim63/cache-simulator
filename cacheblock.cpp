@@ -10,6 +10,9 @@
 
 #include "cacheblock.h"
 
+/* 
+ * CacheBlock class whose instance is a block in the cache.
+ */
 namespace CacheSimulator {
     /* 
      * Make cache block dirty

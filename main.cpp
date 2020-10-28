@@ -18,7 +18,7 @@
 #include <cstring>
 
 /* 
- * Function to print messages about cache 
+ * Function to print information about cache 
  */
 void printHelp() {
     std::cout << "No proper argument passed to program\n";
