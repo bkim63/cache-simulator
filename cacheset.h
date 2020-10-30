@@ -1,6 +1,6 @@
 /**
  * CSF Fall 2020
- * CacheSet implementation
+ * CacheSet header file
  * Assignment 3
  * 1. Steven (Bumjin) Kim
  *    bkim63@jhu.edu

@@ -1,6 +1,6 @@
 /**
  * CSF Fall 2020
- * Cache helper function implementation
+ * Cache utility function implementation
  * Assignment 3
  * 1. Steven (Bumjin) Kim
  *    bkim63@jhu.edu

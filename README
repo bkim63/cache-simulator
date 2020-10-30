@@ -3,27 +3,87 @@ CSF Assignment 3
 1. Steven (Bumjin) Kim
 2. Rebecca Shao
 
-Description
+Report on Best Cache
 =====================
-We did multifarious experiments in various cache configurations and used different cache replacement policies which are FIFO and LRU.
-Also, we tested with all the write miss policies which are write-through and write-back and write eviction policies
-which are write-allocate and no-write allocate. The results are shown below.
+We think that the best cache configuration is [1024 16 16kb write-allocate write-back lru] because for write-allocate & write-back both the total cycles and load and cache misses were low.
+Furthermore, no-write-allocate & write-back cannot be simulated together and also, in our configuration, the load and store misses and total cycles were low when we compared the data from experiments that we ran with
+8kb and 32 number of bytes. The same configuration with 8kb had most store and load misses (17392, 3740) compared to those with 16kb and 32kb. As such, 16kb seems to be the appropriate configuration because store and load misses
+fall somewhere in the sweet spot between two misses from 8kb and 32kb configs. For 256 number of sets, the data are also collected in the first experiment (gcc.trace) that we did, and the load misses were only 3399
+and store misses were only 9236 with [256 4 16kb write-allocate write-back lru] configuration. The total cycles were 9318883 which is lower than 9809283 [256 4 16kb write-allocate write-back fifo] and
+far lower than 22700397 [256 4 16kb no-write-allocate write-through lru] from the other experiments we did with different cache configurations.
 
-Opinion
-=====================
-We think that the best cache configuration is write-allocate write-back lru because the total cycles were lowest. Also, in this configuration,
-the load and store misses were lowest too. It can be seen in the first experiment and the load misses were only 3399 and store misses were only 9236.
-The total cycles were 9318883 which is lower than 9809283 and 22700397 in other experiments we did with different cache configurations.
+Finally, when we compared the data with two configs [1024 (num sets) 16 (num blocks)] vs [256 (num sets) 4 (num blocks)], it was clear that total cycles from experiment with [256 (num sets) 4 (num blocks)] were almost
+double of total cycles from experiment with [1024 (num sets) 16 (num blocks)] as config. To come up with the best cache, we collected the data from variegated experiments by running the following command:
+./csim <number-of-sets> <number-of-blocks> <number-of-bytes> <allocation> <write> <cache-eviction> < <filename>
+
+In the end, we did multifarious experiments in various cache configurations and used different cache replacement policies which are FIFO and LRU. Also, we tested
+with all the write miss policies which are write-through and write-back and write eviction policies which are write-allocate and no-write allocate.
+Extensively, we tested with different number of blocks, sets, and bytes and even tested with 1024 number of sets as configuration and the best cache
+configuration we could find was [1024 16 16kb write-allocate write-back lru]. [write-allocate write-back] combination is widely used in modern cache system as told by the professor.
+Furthermore, the professor said that no-write-allocate and write-back are never used simultaneously so the best cache configuration cannot be [no-write-allocate and write-back].
+As such, the best cache configuration is [1024 16 16kb write-allocate write-back lru].
+
+The data we collected from the experiments are shown below.
 
 Contributions
 =====================
-I, Steven Kim, wrote the cache simulator.
-Rebecca Shao wrote class descriptions and utility class.
+I, Steven (Bumjin) Kim, wrote the cache simulator including cache, cacheblock, cacheset, main, counter and readme and its implementations and header files, with data and function implementations & declarations.
+Rebecca Shao wrote class descriptions, function comments and implemented the utility class and its header file.
 
-Experiments & Results
+Experiments & Results for Best Cache
 =====================
 gcc.trace
 ---------------------------------------------------
+./csim 1024 16 16 write-allocate write-back lru
+
+Total loads: 318197
+Total stores: 197486
+Load hits: 315854
+Load misses: 2343
+Store hits: 188613
+Store misses: 8873
+Total cycles: 5018883
+
+./csim 1024 16 8 write-allocate write-back lru
+
+Total loads: 318197
+Total stores: 197486
+Load hits: 314457
+Load misses: 3740
+Store hits: 180094
+Store misses: 17392
+Total cycles: 5142683
+
+./csim 1024 16 32 write-allocate write-back lru
+
+Total loads: 318197
+Total stores: 197486
+Load hits: 316692
+Load misses: 1505
+Store hits: 192954
+Store misses: 4532
+Total cycles: 5361283
+
+./csim 1024 16 32 no-write-allocate write-through lru
+
+Total loads: 318197
+Total stores: 197486
+Load hits: 314407
+Load misses: 3790
+Store hits: 169733
+Store misses: 27753
+Total cycles: 23098797
+
+./csim 1024 16 32 no-write-allocate write-through fifo
+
+Total loads: 318197
+Total stores: 197486
+Load hits: 314407
+Load misses: 3790
+Store hits: 169733
+Store misses: 27753
+Total cycles: 23098797
+
 ./csim 256 4 16 write-allocate write-back fifo
 
 Total loads: 318197
@@ -64,29 +124,29 @@ Store hits: 163705
 Store misses: 33781
 Total cycles: 22938797
 
-./csim 1024 16 32 no-write-allocate write-through lru
-
-Total loads: 318197
-Total stores: 197486
-Load hits: 314407
-Load misses: 3790
-Store hits: 169733
-Store misses: 27753
-Total cycles: 23098797
-
-./csim 1024 16 32 no-write-allocate write-through fifo
-
-Total loads: 318197
-Total stores: 197486
-Load hits: 314407
-Load misses: 3790
-Store hits: 169733
-Store misses: 27753
-Total cycles: 23098797
-
 
 read01.trace
 ---------------------------------------------------
+./csim 1024 16 32 no-write-allocate write-through lru
+
+Total loads: 5
+Total stores: 0
+Load hits: 2
+Load misses: 3
+Store hits: 0
+Store misses: 0
+Total cycles: 2405
+
+./csim 1024 16 32 no-write-allocate write-through fifo
+
+Total loads: 5
+Total stores: 0
+Load hits: 2
+Load misses: 3
+Store hits: 0
+Store misses: 0
+Total cycles: 2405
+
 ./csim 256 4 16 write-allocate write-back fifo
 
 Total loads: 5
@@ -126,30 +186,30 @@ Load misses: 3
 Store hits: 0
 Store misses: 0
 Total cycles: 1205
-
-./csim 1024 16 32 no-write-allocate write-through lru
-
-Total loads: 5
-Total stores: 0
-Load hits: 2
-Load misses: 3
-Store hits: 0
-Store misses: 0
-Total cycles: 2405
-
-./csim 1024 16 32 no-write-allocate write-through fifo
-
-Total loads: 5
-Total stores: 0
-Load hits: 2
-Load misses: 3
-Store hits: 0
-Store misses: 0
-Total cycles: 2405
 
 
 read02.trace
 ---------------------------------------------------
+./csim 1024 16 32 no-write-allocate write-through lru
+
+Total loads: 10
+Total stores: 0
+Load hits: 9
+Load misses: 1
+Store hits: 0
+Store misses: 0
+Total cycles: 810
+
+./csim 1024 16 32 no-write-allocate write-through fifo
+
+Total loads: 10
+Total stores: 0
+Load hits: 9
+Load misses: 1
+Store hits: 0
+Store misses: 0
+Total cycles: 810
+
 ./csim 256 4 16 write-allocate write-back fifo
 
 Total loads: 10
@@ -189,30 +249,30 @@ Load misses: 1
 Store hits: 0
 Store misses: 0
 Total cycles: 410
-
-./csim 1024 16 32 no-write-allocate write-through lru
-
-Total loads: 10
-Total stores: 0
-Load hits: 9
-Load misses: 1
-Store hits: 0
-Store misses: 0
-Total cycles: 810
-
-./csim 1024 16 32 no-write-allocate write-through fifo
-
-Total loads: 10
-Total stores: 0
-Load hits: 9
-Load misses: 1
-Store hits: 0
-Store misses: 0
-Total cycles: 810
 
 
 read03.trace
 ---------------------------------------------------
+./csim 1024 16 32 no-write-allocate write-through lru
+
+Total loads: 9
+Total stores: 0
+Load hits: 6
+Load misses: 3
+Store hits: 0
+Store misses: 0
+Total cycles: 2409
+
+./csim 1024 16 32 no-write-allocate write-through fifo
+
+Total loads: 9
+Total stores: 0
+Load hits: 6
+Load misses: 3
+Store hits: 0
+Store misses: 0
+Total cycles: 2409
+
 ./csim 256 4 16 write-allocate write-back fifo
 
 Total loads: 9
@@ -252,70 +312,10 @@ Load misses: 4
 Store hits: 0
 Store misses: 0
 Total cycles: 1609
-
-./csim 1024 16 32 no-write-allocate write-through lru
-
-Total loads: 9
-Total stores: 0
-Load hits: 6
-Load misses: 3
-Store hits: 0
-Store misses: 0
-Total cycles: 2409
-
-./csim 1024 16 32 no-write-allocate write-through fifo
-
-Total loads: 9
-Total stores: 0
-Load hits: 6
-Load misses: 3
-Store hits: 0
-Store misses: 0
-Total cycles: 2409
 
 
 write01.trace
 ---------------------------------------------------
-./csim 256 4 16 write-allocate write-back fifo
-
-Total loads: 0
-Total stores: 5
-Load hits: 0
-Load misses: 0
-Store hits: 2
-Store misses: 3
-Total cycles: 1205
-
-./csim 256 4 16 write-allocate write-back lru
-
-Total loads: 0
-Total stores: 5
-Load hits: 0
-Load misses: 0
-Store hits: 2
-Store misses: 3
-Total cycles: 1205
-
-./csim 256 4 16 no-write-allocate write-through fifo
-
-Total loads: 0
-Total stores: 5
-Load hits: 0
-Load misses: 0
-Store hits: 2
-Store misses: 3
-Total cycles: 1205
-
-./csim 256 4 16 no-write-allocate write-through lru
-
-Total loads: 0
-Total stores: 5
-Load hits: 0
-Load misses: 0
-Store hits: 2
-Store misses: 3
-Total cycles: 1205
-
 ./csim 1024 16 32 no-write-allocate write-through fifo
 
 Total loads: 0
@@ -336,49 +336,49 @@ Store hits: 0
 Store misses: 5
 Total cycles: 500
 
-
-write02.trace
----------------------------------------------------
 ./csim 256 4 16 write-allocate write-back fifo
 
 Total loads: 0
-Total stores: 10
+Total stores: 5
 Load hits: 0
 Load misses: 0
-Store hits: 9
-Store misses: 1
-Total cycles: 410
+Store hits: 2
+Store misses: 3
+Total cycles: 1205
 
 ./csim 256 4 16 write-allocate write-back lru
 
 Total loads: 0
-Total stores: 10
+Total stores: 5
 Load hits: 0
 Load misses: 0
-Store hits: 9
-Store misses: 1
-Total cycles: 410
+Store hits: 2
+Store misses: 3
+Total cycles: 1205
 
 ./csim 256 4 16 no-write-allocate write-through fifo
 
 Total loads: 0
-Total stores: 10
+Total stores: 5
 Load hits: 0
 Load misses: 0
-Store hits: 9
-Store misses: 1
-Total cycles: 410
+Store hits: 2
+Store misses: 3
+Total cycles: 1205
 
 ./csim 256 4 16 no-write-allocate write-through lru
 
 Total loads: 0
-Total stores: 10
+Total stores: 5
 Load hits: 0
 Load misses: 0
-Store hits: 9
-Store misses: 1
-Total cycles: 410
+Store hits: 2
+Store misses: 3
+Total cycles: 1205
 
+
+write02.trace
+---------------------------------------------------
 ./csim 1024 16 32 no-write-allocate write-through fifo
 
 Total loads: 0
@@ -399,9 +399,99 @@ Store hits: 0
 Store misses: 10
 Total cycles: 1000
 
+./csim 256 4 16 write-allocate write-back fifo
+
+Total loads: 0
+Total stores: 10
+Load hits: 0
+Load misses: 0
+Store hits: 9
+Store misses: 1
+Total cycles: 410
+
+./csim 256 4 16 write-allocate write-back lru
+
+Total loads: 0
+Total stores: 10
+Load hits: 0
+Load misses: 0
+Store hits: 9
+Store misses: 1
+Total cycles: 410
+
+./csim 256 4 16 no-write-allocate write-through fifo
+
+Total loads: 0
+Total stores: 10
+Load hits: 0
+Load misses: 0
+Store hits: 9
+Store misses: 1
+Total cycles: 410
+
+./csim 256 4 16 no-write-allocate write-through lru
+
+Total loads: 0
+Total stores: 10
+Load hits: 0
+Load misses: 0
+Store hits: 9
+Store misses: 1
+Total cycles: 410
+
 
 swim.trace
 ---------------------------------------------------
+./csim 1024 16 16 write-allocate write-back lru
+
+Total loads: 220668
+Total stores: 82525
+Load hits: 219742
+Load misses: 926
+Store hits: 72028
+Store misses: 10497
+Total cycles: 4873193
+
+./csim 1024 16 8 write-allocate write-back lru
+
+Total loads: 220668
+Total stores: 82525
+Load hits: 219354
+Load misses: 1314
+Store hits: 64023
+Store misses: 18502
+Total cycles: 4685393
+
+./csim 1024 16 32 write-allocate write-back lru
+
+Total loads: 220668
+Total stores: 82525
+Load hits: 220077
+Load misses: 591
+Store hits: 76720
+Store misses: 5805
+Total cycles: 5419993
+
+./csim 1024 16 32 no-write-allocate write-through fifo
+
+Total loads: 220668
+Total stores: 82525
+Load hits: 218642
+Load misses: 2026
+Store hits: 62147
+Store misses: 20378
+Total cycles: 10093968
+
+./csim 1024 16 32 no-write-allocate write-through lru
+
+Total loads: 220668
+Total stores: 82525
+Load hits: 218642
+Load misses: 2026
+Store hits: 62147
+Store misses: 20378
+Total cycles: 10093968
+
 ./csim 256 4 16 write-allocate write-back fifo
 
 Total loads: 220668
@@ -441,24 +531,3 @@ Load misses: 2596
 Store hits: 58030
 Store misses: 24495
 Total cycles: 9511568
-
-./csim 1024 16 32 no-write-allocate write-through fifo
-
-Total loads: 220668
-Total stores: 82525
-Load hits: 218642
-Load misses: 2026
-Store hits: 62147
-Store misses: 20378
-Total cycles: 10093968
-
-./csim 1024 16 32 no-write-allocate write-through lru
-
-Total loads: 220668
-Total stores: 82525
-Load hits: 218642
-Load misses: 2026
-Store hits: 62147
-Store misses: 20378
-Total cycles: 10093968
-

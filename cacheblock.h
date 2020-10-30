@@ -1,6 +1,6 @@
 /**
  * CSF Fall 2020
- * CacheBlock implementation
+ * CacheBlock header file
  * Assignment 3
  * 1. Steven (Bumjin) Kim
  *    bkim63@jhu.edu
