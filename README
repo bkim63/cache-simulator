@@ -15,6 +15,11 @@ We think that the best cache configuration is write-allocate write-back lru beca
 the load and store misses were lowest too. It can be seen in the first experiment and the load misses were only 3399 and store misses were only 9236.
 The total cycles were 9318883 which is lower than 9809283 and 22700397 in other experiments we did with different cache configurations.
 
+Contributions
+=====================
+I, Steven Kim, wrote the cache simulator.
+Rebecca Shao wrote class descriptions and utility class.
+
 Experiments & Results
 =====================
 gcc.trace
