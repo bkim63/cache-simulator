@@ -13,6 +13,9 @@
 
 using namespace std;
 
+/* 
+ * CacheConfig class whose instance is the cache configuration.
+ */
 namespace CacheSimulator {
     /* 
      * Getter for number of sets in cache configuration
@@ -232,6 +235,14 @@ namespace CacheSimulator {
 
     /* 
      * Constructor for CacheConfig class
+     * 
+     * Parameters:
+     *  uint32_t numSets number of sets in cache
+     *  uint32_t numBlocks number of blocks in cache
+     *  uint32_t numBytes number of byte in cache
+     *  Allocation allocation - allocation of cache
+     *  Write write - write method of cache
+     *  CacheEviction evictionType - eviction method of cache
      */
     CacheConfig::CacheConfig(uint32_t numSets, uint32_t numBlocks, uint32_t numBytes,
                              Allocation allocation, Write write, CacheEviction evictionType) :

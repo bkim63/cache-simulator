@@ -10,6 +10,9 @@
 
 #include "counter.h"
 
+/*
+ * Counter class for the increment operator
+ */
 namespace CacheSimulator {
     /* 
      * Function for increment operator ++ 

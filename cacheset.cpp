@@ -13,6 +13,9 @@
 #include <string>
 #include "cacheset.h"
 
+/* 
+ * CacheSet class whose instance is a set in the cache.
+ */
 namespace CacheSimulator {
     /* 
      * Function to add block into blocks vector

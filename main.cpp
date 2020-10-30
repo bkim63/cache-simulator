@@ -1,6 +1,6 @@
 /**
  * CSF Fall 2020
- * Cache implementation
+ * Main file
  * Assignment 3
  * 1. Steven (Bumjin) Kim
  *    bkim63@jhu.edu
@@ -18,7 +18,7 @@
 #include <cstring>
 
 /* 
- * Function to print messages about cache 
+ * Function to print information about cache 
  */
 void printHelp() {
     std::cout << "No proper argument passed to program\n";

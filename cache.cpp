@@ -13,6 +13,9 @@
 #include <string>
 #include "cache.h"
 
+/* 
+ * Cache class whose instances are the cache.
+ */
 namespace CacheSimulator {
     /* 
      * Add set to cache

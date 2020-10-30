@@ -19,6 +19,9 @@
 
 #define numBits 32
 
+/*
+ * Utils Class with useful helper functions for cache implementation.
+ */
 namespace CacheSimulator {
     /* 
      * Function to print the load and store information of cache
