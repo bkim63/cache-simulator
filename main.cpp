@@ -31,17 +31,18 @@ void printHelp() {
               << " < <filename>\n";
 }
 
+/*
+ * Main function to run a cache simulator
+ *
+ * Parameters:
+ *   argc - number of arguments
+ *   argv - arguments passed to the program
+ */
 int main(int argc, char *argv[]) {
 
-    int numSets = 0;
-    int numBlocks = 0;
-    int blockSize = 0;
-    int cacheStore = 0;
-    int memoryWrite = 0;
-    int evict = 0;
+    int numSets = 0, numBlocks = 0, blockSize = 0, cacheStore = 0, memoryWrite = 0, evict = 0;
 
     if (argc == 7) {
-        // arguments check
         numBlocks = std::stoi(argv[2]);
         int check = CacheSimulator::convertToInteger(argv[3]);
         if (check == -1)
@@ -76,11 +77,9 @@ int main(int argc, char *argv[]) {
             printHelp();
             return 1;
         }
-
         evict = CacheSimulator::shouldEvict(argv[6]);
         if (evict == -1)
             return 1;
-
 
         int numBitIndex = CacheSimulator::getPowerTwo(numSets);
         int numBitOffset = CacheSimulator::getPowerTwo(blockSize);
@@ -88,34 +87,29 @@ int main(int argc, char *argv[]) {
         if (numBitIndex == -1 || numBitOffset == -1)
             return 1;
 
-
         int numBitTag = 32 - numBitOffset - numBitIndex;
 
         CacheSimulator::Cache cache = CacheSimulator::Cache(numSets, numBlocks, blockSize, cacheStore, memoryWrite, evict);
         std::string firstTag = "";
 
-        bool dirty = false;
-        bool noErr = false;
+        bool dirty = false, noErr = false;
 
         for (std::string line; getline(std::cin, line);) {
             uint32_t address, data;
             std::string operation;
             std::istringstream string_stream(line);
-
             string_stream >> operation >> std::hex >> address >> std::dec >> data;
 
             std::string index = CacheSimulator::getIndex(numBitIndex, numBitTag, address);
             std::string tag = CacheSimulator::getTag(numBitTag, address);
 
             if (operation == "l") {
-                // read from cache
                 check = cache.read(index, tag, firstTag);
                 if (check != 0) {
                     std::cerr << "Failed to read from cache." << std::endl;
                     return 1;
                 }
             } else if (operation == "s") {
-                // write to cache
                 check = cache.write(index, tag, firstTag, dirty);
                 if (check == -1) {
                     std::cerr << "Failed to write to cache." << std::endl;
@@ -134,9 +128,11 @@ int main(int argc, char *argv[]) {
                     dirty = false;
                     block->setDirty();
                 }
-                cache.findSet(index)->addBlock(*block);
+                set->addBlock(*block);
                 delete block;
             }
+            if (set->isEmpty())
+                delete set;
 
             noErr = true;
         }
@@ -146,13 +142,10 @@ int main(int argc, char *argv[]) {
             printHelp();
             return 1;
         }
-
         cache.displaySimulator();
         return 0;
-
     } else {
         printHelp();
         return 1;
     }
-
 }

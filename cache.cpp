@@ -49,7 +49,8 @@ namespace CacheSimulator {
         if (it != sets.end())
             return &sets[index];
 
-        return new CacheSet(true);
+        CacheSet *set = new CacheSet(true);
+        return set;
     }
 
     /* 
